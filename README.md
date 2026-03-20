@@ -87,4 +87,4 @@ find . -name "*.nix" | entr -r home-manager switch --flake .#work-pc
 
 ---
 
-**Would you like me to generate the first `flake.nix` that matches this exact structure so you can run your first "switch"?**
+Side note : https://github.com/hyprwm/hyprland-plugins/tree/main/hyprbars
