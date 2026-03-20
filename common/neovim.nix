@@ -1,11 +1,9 @@
 { config, pkgs, ... }:
 
 {
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
-    vimAlias = true;
-  };
+  home.packages = [ pkgs.neovim ];
+
+  home.sessionVariables.EDITOR = "nvim";
 
   # Mutable symlink so lazy.nvim can write (plugin installs, lazy-lock.json)
   xdg.configFile."nvim".source =

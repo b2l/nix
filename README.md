@@ -1,12 +1,8 @@
-This is the clean, high-level `README.md` for your new "System as Code" repository. It’s designed to be your primary reference for **Fedora 42** and sets the foundation for your future transition.
-
----
-
-# 🛰️ System-as-Code: Universal Environment
+# System-as-Code: Universal Environment
 
 This repository manages a declarative, high-performance development environment using **Nix** and **Home Manager**. It replaces the traditional "dotenv" approach with a reproducible, version-controlled system.
 
-## 🎯 Core Principles
+## Core Principles
 
 1.  **Declarative Truth:** The configuration in this repository *is* the state of the system. If it isn't in the code, it doesn't exist.
 2.  **Atomic Rollbacks:** Every change creates a new "generation." If a change breaks the workflow, rolling back takes seconds.
@@ -14,35 +10,46 @@ This repository manages a declarative, high-performance development environment 
 
 ---
 
-## 🛠️ The Stack
+## The Stack
 
 | Component | Tool | Description |
 | :--- | :--- | :--- |
 | **Package Manager** | **Nix (Flakes)** | Handles software installation with bit-for-bit reproducibility. |
 | **Config Manager** | **Home Manager** | Manages `~/.config` files as read-only symlinks from the Nix store. |
-| **Secret Manager** | **sops-nix** | Uses `age` to encrypt secrets in Git, decrypted via local SSH keys. |
-| **Workflow** | **"Workflow B"** | A background watcher (`entr`) that auto-rebuilds on file save. |
+| **Secret Manager** | **sops-nix** | Uses `age` to encrypt secrets in Git, decrypted via local age key. |
+| **Theme** | **Catppuccin Mocha** | Consistent theming across all tools via `catppuccin/nix`. |
 
 ---
 
-## 📂 Repository Structure
+## Repository Structure
 
 ```text
 .
 ├── flake.nix            # Entry point: defines inputs and system outputs
 ├── flake.lock           # Dependency lockfile (Do not edit manually)
-├── common/              # Shared logic (Neovim, Tmux, Git, Shell)
-│   ├── default.nix      # Core package list
-│   └── nvim.nix         # Neovim specific configuration
+├── .sops.yaml           # sops-nix encryption rules
+├── common/              # Shared configuration modules
+│   ├── default.nix      # Core package list and imports
+│   ├── fish.nix         # Fish shell, aliases, starship, fzf, direnv
+│   ├── tmux.nix         # Tmux configuration
+│   ├── foot.nix         # Foot terminal
+│   ├── hyprland.nix     # Hyprland, waybar, dunst, tofi, hypridle, hyprpaper
+│   ├── neovim.nix       # Neovim (package + mutable symlink)
+│   ├── secrets.nix      # sops-nix secret declarations
+│   └── theme/           # Extracted theme files (CSS, conf)
+├── nvim/                # Neovim config (NvChad + lazy.nvim, mutable via mkOutOfStoreSymlink)
+├── devshells/           # Per-project development environments
+│   └── tauri.nix        # Tauri app dependencies
 ├── hosts/               # Machine-specific overrides
 │   └── fedora/
-│       └── home.nix     # Fedora 42 specifics (Monitors, Work apps)
-└── secrets/             # Encrypted YAML files (SOPS)
+│       └── home.nix     # Fedora 42 specifics
+└── secrets/             # Encrypted YAML files (sops-nix)
+    └── lcdp.yaml        # Work environment variables
 ```
 
 ---
 
-## 🚀 Getting Started (Fedora 42)
+## Getting Started (Fedora 42)
 
 ### 1. Install the Nix Package Manager
 Use the Determinate Systems installer for the most robust setup:
@@ -68,31 +75,53 @@ nix run home-manager/master -- switch --flake .#work-pc -b backup
 Home Manager can't manage the login shell on non-NixOS systems — this is a one-time manual step:
 ```bash
 echo "$HOME/.nix-profile/bin/fish" | sudo tee -a /etc/shells
-sudo chsh -s "$HOME/.nix-profile/bin/fish" nicolas
+sudo chsh -s "$HOME/.nix-profile/bin/fish" $USER
 ```
 
 ---
 
-## 🔄 The "Hot-Reload" Workflow (Workflow B)
+## Daily Usage
 
-To enable instant feedback while tweaking **Hyprland** or **Tmux**, run the watcher script in a background terminal/tmux pane:
+Apply configuration changes:
+```bash
+nhs
+```
+
+Edit encrypted secrets:
+```bash
+nix shell nixpkgs#sops -c sops secrets/lcdp.yaml
+```
+
+Rollback to a previous generation:
+```bash
+home-manager generations
+home-manager switch --generation N
+```
+
+Garbage collect old generations:
+```bash
+home-manager expire-generations "-7 days"
+nix-collect-garbage
+```
+
+---
+
+## Per-Project Dev Environments
+
+Projects use `devShells` defined in this repo + `direnv` for automatic activation:
 
 ```bash
-# watch.sh
-find . -name "*.nix" | entr -r home-manager switch --flake .#work-pc
+# In project directory
+echo "use flake ~/Perso/nix#tauri" > .envrc
+direnv allow
 ```
 
----
-
-## ⚠️ Important Notes
-
-* **Read-Only Files:** Files managed by Home Manager are symlinked to the Nix store. They are **read-only**. To change them, edit the `.nix` source and save; the watcher will update the symlink.
-* **Neovim Exception:** For active plugin development, the Neovim directory can be linked via `mkOutOfStoreSymlink` to maintain write access for `lazy.nvim`.
-* **Garbage Collection:** To free up space from old generations:
-    ```bash
-    nix-collect-garbage -d
-    ```
+Available devShells: `tauri`
 
 ---
 
-Side note : https://github.com/hyprwm/hyprland-plugins/tree/main/hyprbars
+## Important Notes
+
+* **Read-Only Files:** Files managed by Home Manager are symlinked to the Nix store. They are **read-only**. To change them, edit the `.nix` source and run `nhs`.
+* **Neovim Exception:** The Neovim directory is linked via `mkOutOfStoreSymlink` to maintain write access for `lazy.nvim`.
+* **Secrets Bootstrap:** The age key at `~/.config/sops/age/keys.txt` is the one manual prerequisite — everything else is derived from this repo.
