@@ -51,16 +51,24 @@ curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix 
 ```
 
 ### 2. Prepare Secrets (Age Key)
-Convert your existing SSH key to an Age key for `sops-nix`:
+Generate a standalone age key for `sops-nix`. Store the key in your password manager — it's the only thing that can't be recovered from this repo.
 ```bash
 mkdir -p ~/.config/sops/age
-nix shell nixpkgs#ssh-to-age -c ssh-to-age -private-key -i ~/.ssh/id_ed25519 -o ~/.config/sops/age/keys.txt
+nix shell nixpkgs#age -c age-keygen -o ~/.config/sops/age/keys.txt
 ```
+Note the public key it prints (`age1...`) — you'll need it if you update `.sops.yaml`.
 
 ### 3. Initialize the Environment
 Clone this repo and apply the configuration for the first time:
 ```bash
-nix run home-manager/master -- init --flake .#work-pc
+nix run home-manager/master -- switch --flake .#work-pc -b backup
+```
+
+### 4. Set Fish as Default Shell
+Home Manager can't manage the login shell on non-NixOS systems — this is a one-time manual step:
+```bash
+echo "$HOME/.nix-profile/bin/fish" | sudo tee -a /etc/shells
+sudo chsh -s "$HOME/.nix-profile/bin/fish" nicolas
 ```
 
 ---
