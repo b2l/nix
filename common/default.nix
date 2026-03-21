@@ -27,6 +27,11 @@
 
   home.file.".local/share/wall.jpg".source = ./theme/wallpaper.jpg;
 
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
+
   # Bat — catppuccin theme applied globally
   programs.bat.enable = true;
 

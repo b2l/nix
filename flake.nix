@@ -36,6 +36,13 @@
 
       devShells.x86_64-linux = {
         tauri = import ./devshells/tauri.nix { inherit pkgs; };
+        java21 = import ./devshells/java21.nix { inherit pkgs; };
+        java-legacy = import ./devshells/java-legacy.nix { inherit pkgs; };
+        node20 = import ./devshells/node20.nix { inherit pkgs; };
+        node22 = import ./devshells/node22.nix { inherit pkgs; };
+        python = import ./devshells/python.nix { inherit pkgs; };
+        scala = import ./devshells/scala.nix { inherit pkgs; };
+        terraform = import ./devshells/terraform.nix { inherit pkgs; };
       };
     };
 }
