@@ -36,6 +36,7 @@ pkgs.mkShell {
     openssl
     librsvg
     libsoup_3
+    glib-networking
 
     # GPU wrapper for non-NixOS
     nixgl.nixGLIntel
@@ -43,5 +44,6 @@ pkgs.mkShell {
 
   shellHook = ''
     export WEBKIT_DISABLE_DMABUF_RENDERER=1
+    export GIO_EXTRA_MODULES="${pkgs.glib-networking}/lib/gio/modules"
   '';
 }

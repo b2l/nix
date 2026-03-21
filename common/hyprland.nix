@@ -64,7 +64,6 @@
 
       input = {
         kb_layout = "us,fr";
-        kb_variant = ",";
         kb_options = "grp:alt_shift_toggle,compose:menu";
         follow_mouse = 0;
         touchpad.natural_scroll = true;
@@ -72,8 +71,8 @@
       };
 
       general = {
-        gaps_in = 5;
-        gaps_out = 5;
+        gaps_in = 6;
+        gaps_out = 10;
         border_size = 3;
         "col.active_border" = "$lavender";
         "col.inactive_border" = "$mantle";
@@ -84,7 +83,7 @@
         active_opacity = 1.0;
         inactive_opacity = 0.9;
         fullscreen_opacity = 1;
-        rounding = 16;
+        rounding = 6;
         blur = {
           enabled = true;
           size = 4;
@@ -246,7 +245,12 @@
 
       bindirt = [ ", Caps_Lock, exec, pkill -SIGRTMIN+1 waybar" ];
 
-      layerrule = [ "blur, launcher" ];
+      layerrule = [
+        "blur, launcher"
+        "blur, waybar"
+        "ignorezero, waybar"
+        "blur, logout_dialog"
+      ];
     };
   };
 
@@ -256,50 +260,155 @@
     "hypr/hyprpaper.conf".source = ./theme/hyprpaper.conf;
     "tofi/config".source = ./theme/tofi-config;
     "tofi/powermenu-config".source = ./theme/tofi-powermenu;
+    "wlogout/layout".source = ./theme/wlogout-layout;
+    "wlogout/style.css".text = ''
+      * {
+          background-image: none;
+          box-shadow: none;
+          font-family: "Cantarell", sans-serif;
+      }
+      window {
+          background-color: rgba(17, 17, 27, 0.85);
+      }
+      button {
+          background-color: rgba(30, 30, 46, 0.95);
+          border: 1px solid rgba(69, 71, 90, 0.6);
+          border-radius: 6px;
+          margin: 250px 12px;
+          padding-top: 80px;
+          color: #6c7086;
+          font-size: 9pt;
+          background-repeat: no-repeat;
+          background-position: center 35%;
+          background-size: 28%;
+          transition: all 250ms cubic-bezier(0.05, 0.7, 0.1, 1);
+          outline-style: none;
+      }
+      button:hover {
+          background-color: rgba(49, 50, 68, 0.95);
+          border-color: rgba(203, 166, 247, 0.7);
+          box-shadow: 0 0 16px rgba(203, 166, 247, 0.2);
+          color: #cdd6f4;
+      }
+      button:focus {
+          background-color: rgba(49, 50, 68, 0.95);
+          border-color: rgba(203, 166, 247, 0.5);
+          outline-style: none;
+      }
+      button:active {
+          background-color: rgba(69, 71, 90, 0.95);
+          border-color: #cba6f7;
+      }
+      #lock {
+          background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/lock.png"));
+      }
+      #suspend {
+          background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/suspend.png"));
+      }
+      #reboot {
+          background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/reboot.png"));
+      }
+      #shutdown {
+          background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/shutdown.png"));
+      }
+      #logout {
+          background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/logout.png"));
+          background-position: 55% 35%;
+      }
+    '';
   };
 
   # Waybar
   programs.waybar = {
     enable = true;
-    settings.mainBar = {
-      layer = "top";
-      height = 50;
-      spacing = 10;
-      modules-left = [ "hyprland/workspaces" ];
-      modules-center = [ "hyprland/window" ];
-      modules-right = [
-        "tray" "pulseaudio" "network" "battery"
-        "custom/donotdisturb" "custom/capslock"
-        "hyprland/language" "clock" "custom/power"
-      ];
-      "custom/donotdisturb" = { exec = "donotdisturb.sh"; format = "{}"; interval = 1; return-type = "json"; signal = 1; };
-      "custom/capslock" = { exec = "capslock.sh"; format = "{}"; interval = "once"; return-type = "json"; signal = 1; };
-      "hyprland/window".separate-outputs = true;
-      "hyprland/workspaces" = { disable-scroll = true; all-outputs = true; on-click = "activate"; };
-      tray.spacing = 10;
-      "hyprland/language" = {};
-      clock = { tooltip-format = "{:%A, %B %d, %Y}"; format = "{:%H:%M}"; };
-      battery = {
-        states.warning = 20;
-        format = "{icon}";
-        format-icons = [ "󰂎" "󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹" ];
-        format-charging = "󰂄";
-        format-warning = "󰂃";
-        tooltip-format = "{capacity}% capacity";
+    settings = {
+      mainBar = {
+        name = "mainbar";
+        layer = "top";
+        position = "top";
+        height = 36;
+        margin-top = 6;
+        margin-left = 10;
+        margin-right = 10;
+        spacing = 6;
+        modules-left = [ "hyprland/workspaces" "hyprland/window" ];
+        modules-center = [ "clock" ];
+        modules-right = [
+          "custom/cpu-spark" "custom/sep" "custom/mem-spark"
+          "custom/sep" "tray" "pulseaudio" "custom/sep" "network"
+          "custom/sep" "battery" "custom/sep" "custom/donotdisturb"
+          "custom/sep" "hyprland/language" "custom/sep" "custom/power"
+        ];
+        "custom/cpu-spark" = {
+          format = "{}";
+          return-type = "json";
+          exec = "sparkline-cpu.sh";
+          interval = 2;
+        };
+        "custom/mem-spark" = {
+          format = "{}";
+          return-type = "json";
+          exec = "sparkline-mem.sh";
+          interval = 5;
+        };
+        "custom/sep" = { format = " "; tooltip = false; };
+        "custom/donotdisturb" = { exec = "donotdisturb.sh"; format = "{}"; interval = 1; return-type = "json"; signal = 1; on-click = "dunstctl set-paused toggle"; };
+        "hyprland/window".separate-outputs = true;
+        "hyprland/workspaces" = { disable-scroll = true; all-outputs = true; on-click = "activate"; };
+        tray.spacing = 10;
+        "hyprland/language" = { format = "{short}"; };
+        clock = { tooltip-format = "{:%A, %B %d, %Y}"; format = "{:%H:%M}"; };
+        battery = {
+          states = { warning = 20; critical = 10; };
+          format = "󱊣 {capacity}";
+          format-charging = "󰂄 {capacity}";
+          format-full = "󱊣 100";
+          tooltip-format = "{timeTo}";
+        };
+        network = {
+          format-wifi = "󰤨 {signalStrength}";
+          format-ethernet = "󰈀";
+          format-disconnected = "󰤭";
+          tooltip-format-wifi = "{essid} ({signalStrength}%)";
+          tooltip-format-ethernet = "{ifname}: {ipaddr}";
+          on-click = "hyprctl dispatch exec '[float]' '$TERMINAL -e networkmanager_dmenu'";
+        };
+        pulseaudio = {
+          format = "󰕾 {volume}";
+          format-muted = "󰖁 0";
+          tooltip-format = "{desc}";
+          on-click = "pavucontrol";
+        };
+        "custom/power" = { format = "⏻"; on-click = "sleep 0.15 && powermenu"; };
       };
-      network = {
-        format-wifi = "󰤨";
-        format-disconnected = "󰤭";
-        tooltip-format = "Connected to {essid}";
-        on-click = "hyprctl dispatch exec '[float]' '$TERMINAL -e networkmanager_dmenu'";
+
+      nowPlaying = {
+        name = "nowplaying";
+        layer = "top";
+        position = "bottom";
+        height = 34;
+        margin-bottom = 8;
+        modules-center = [ "mpris" ];
+        mpris = {
+          format = "{player_icon}  {dynamic}";
+          format-paused = "{status_icon}  {dynamic}";
+          format-stopped = "";
+          player-icons = {
+            default = "▶";
+            spotify = "󰓇";
+            firefox = "󰈹";
+            chromium = "󰊯";
+          };
+          status-icons = {
+            paused = "󰏤";
+          };
+          dynamic-order = [ "title" "artist" ];
+          dynamic-separator = "  —  ";
+          title-len = 30;
+          artist-len = 20;
+          tooltip-format = "{player}: {title} — {artist} ({album})";
+        };
       };
-      pulseaudio = {
-        format = "{icon}";
-        format-muted = "󰖁";
-        format-icons.default = [ "" "" "󰕾" ];
-        tooltip-format = "{volume}% volume";
-      };
-      "custom/power" = { format = "󰐥"; on-click = "sleep 0.15 && powermenu"; };
     };
     style = builtins.readFile ./theme/waybar-style.css;
   };

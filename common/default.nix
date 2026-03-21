@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  imports = [ ./fish.nix ./tmux.nix ./foot.nix ./hyprland.nix ./secrets.nix ./neovim.nix ];
+  imports = [ ./fish.nix ./tmux.nix ./foot.nix ./hyprland.nix ./secrets.nix ./neovim.nix ./scripts.nix ];
 
   catppuccin = {
     enable = true;
@@ -11,10 +11,44 @@
   home.packages = with pkgs; [
     nh
     lsd
-    bat
     nodejs_22
     pnpm
+    btop
+    mpv
+    lazygit
+    playerctl
+    gh
+    wlogout
   ];
+
+  home.file.".local/share/wall.jpg".source = ./theme/wallpaper.jpg;
+
+  # Bat — catppuccin theme applied globally
+  programs.bat.enable = true;
+
+  # Lazygit — catppuccin theme via catppuccin.enable
+  programs.lazygit = {
+    enable = true;
+    settings = {
+      git.pagers.pager = "delta --dark --paging=never --line-numbers --hyperlinks --hyperlinks-file-link-format=\"lazygit-edit://{path}:{line}\"";
+      git.pagers.colorArg = "never";
+    };
+  };
+
+  # GTK theming — catppuccin handles theme and icons
+  gtk = {
+    enable = true;
+    font.name = "Adwaita Sans";
+    font.size = 11;
+    gtk3.extraConfig = {
+      gtk-cursor-theme-size = 24;
+      gtk-application-prefer-dark-theme = true;
+    };
+    gtk4.extraConfig = {
+      gtk-cursor-theme-size = 24;
+      gtk-application-prefer-dark-theme = true;
+    };
+  };
 
   programs.delta = {
     enable = true;

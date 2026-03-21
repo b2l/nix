@@ -29,105 +29,127 @@
 @define-color flamingo  #f2cdcd;
 @define-color rosewater #f5e0dc;
 
+/* ── Global ── */
 * {
     font-family: Cantarell, Symbols Nerd Font;
-    font-weight: bolder;
-    font-size: 18px;
+    font-weight: bold;
+    font-size: 14px;
 }
 
+/* ── Bar: transparent background, wallpaper shows through ── */
 window#waybar {
-    background-color: @crust;
+    background-color: transparent;
     color: @text;
-    transition-property: background-color;
-    transition-duration: .5s;
 }
 
-window#waybar.hidden {
-    opacity: 0.2;
+/* ── Top bar: two floating segments ── */
+window#waybar.mainbar .modules-left {
+    background-color: alpha(@mantle, 0.8);
+    border: 1px solid alpha(@surface1, 0.5);
+    border-radius: 6px;
+    padding: 0 2px;
+    margin: 2px 0;
 }
 
-window#waybar.termite {
-    background-color: #3F3F3F;
+window#waybar.mainbar .modules-right {
+    background-color: alpha(@mantle, 0.8);
+    border: 1px solid alpha(@surface1, 0.5);
+    border-radius: 6px;
+    padding: 0 8px;
+    margin: 2px 0;
 }
 
-window#waybar.chromium {
-    background-color: #000000;
+/* ── Bottom bar: hide empty left/right containers ── */
+window#waybar.nowplaying .modules-left,
+window#waybar.nowplaying .modules-right {
+    background: transparent;
     border: none;
+    padding: 0;
+    margin: 0;
+    min-width: 0;
 }
 
-button {
-    box-shadow: inset 0 -3px transparent;
-    border: none;
-    border-radius: 0;
+/* ── Workspaces ── */
+#workspaces button {
+    padding: 0 6px;
+    color: @overlay0;
+    margin: 3px 1px;
+    border-radius: 4px;
+    transition: all 200ms ease;
 }
 
 #workspaces button:hover {
-    color: @blue;
-    box-shadow: inherit;
-    text-shadow: inherit;
-    background: @crust;
-    border: @crust;
-}
-
-#workspaces button {
-    padding: 0 5px;
-    color: @surface2;
-    margin: 4px 0 4px 6px;
-    transition: color 200ms ease-in-out;
-}
-
-#workspaces button.selected {
-    color: @blue;
+    color: @text;
+    background: @surface0;
+    box-shadow: none;
+    border: none;
 }
 
 #workspaces button.active {
-    color: @mauve;
+    color: @crust;
+    background: @mauve;
+}
+
+#workspaces button.occupied {
+    color: @blue;
 }
 
 #workspaces button.urgent {
     color: @red;
 }
 
-#clock,
-#battery,
-#cpu,
-#memory,
-#disk,
-#temperature,
-#backlight,
-#network,
-#pulseaudio,
-#wireplumber,
-#custom-pacman,
-#custom-power,
-#tray,
-#mode,
-#idle_inhibitor,
-#scratchpad,
-#mpd {
-    padding: 0 9px;
-    color: @text;
-    border-radius: 15px;
-    margin: 5px 0;
+/* ── Window title: inside left segment ── */
+#window {
+    color: @subtext0;
+    font-size: 13px;
+    font-weight: normal;
+    padding: 0 10px;
+    margin-left: 4px;
 }
 
-#window,
-#workspaces {
-    margin: 0 4px;
-}
-
-.modules-left > widget:first-child > #workspaces {
-    margin-left: 2px;
+/* ── Clock: floating center, no background ── */
+window#waybar.mainbar .modules-center {
+    background: transparent;
+    border: none;
 }
 
 #clock {
     color: @text;
+    font-weight: bold;
+    font-size: 15px;
+    letter-spacing: 0.5px;
 }
 
-#custom-pacman {
+/* ── Module defaults ── */
+#battery,
+#network,
+#pulseaudio,
+#custom-cpu-spark,
+#custom-mem-spark,
+#custom-donotdisturb,
+#custom-power,
+#tray,
+#language {
+    padding: 0 6px;
+    color: @text;
+    margin: 3px 0;
+    font-size: 13px;
+}
+
+/* ── Sparklines ── */
+#custom-cpu-spark {
     color: @peach;
+    font-size: 12px;
+    letter-spacing: -1px;
 }
 
+#custom-mem-spark {
+    color: @lavender;
+    font-size: 12px;
+    letter-spacing: -1px;
+}
+
+/* ── Audio ── */
 #pulseaudio {
     color: @mauve;
 }
@@ -136,14 +158,16 @@ button {
     color: @surface2;
 }
 
+/* ── Network ── */
 #network {
-    color: @blue;
+    color: @sapphire;
 }
 
 #network.disconnected {
     color: @surface2;
 }
 
+/* ── Battery ── */
 #battery {
     color: @green;
 }
@@ -152,23 +176,82 @@ button {
     color: @red;
 }
 
+#battery.critical:not(.charging) {
+    color: @red;
+}
+
+/* ── DND ── */
+#custom-donotdisturb {
+    color: @yellow;
+}
+
+/* ── Language ── */
+#language {
+    color: @subtext0;
+    font-size: 12px;
+}
+
+/* ── Power ── */
 #custom-power {
-    color: @maroon;
-    margin-right: 5px;
+    color: @red;
+    font-size: 14px;
 }
 
-#keyboard-state > label {
-    padding: 0 5px;
+/* ── Separator ── */
+#custom-sep {
+    padding: 0 0px;
+    margin: 8px 0;
+    min-width: 0;
+    border-left: 1px solid @surface2;
+    background: transparent;
+    border-radius: 0;
 }
 
-#keyboard-state > label.locked {
-    background: rgba(0, 0, 0, 0.2);
+/* ── Tray ── */
+#tray {
+    color: @overlay1;
 }
 
-#scratchpad {
-    background: rgba(0, 0, 0, 0.2);
-}
-
-#scratchpad.empty {
+/* ═══════════════════════════════════
+   NOW PLAYING — bottom floating pill
+   ═══════════════════════════════════ */
+window#waybar.nowplaying {
     background-color: transparent;
+}
+
+window#waybar.nowplaying .modules-center {
+    background-color: alpha(@mantle, 0.8);
+    border: 1px solid alpha(@surface1, 0.5);
+    border-radius: 6px;
+    padding: 0 16px;
+    margin: 0;
+}
+
+#mpris {
+    padding: 0 8px;
+    color: @mauve;
+    font-size: 13px;
+}
+
+#mpris.paused {
+    color: @overlay1;
+    font-style: italic;
+}
+
+#mpris.stopped {
+    margin: 0;
+    padding: 0;
+    min-width: 0;
+}
+
+#mpris.spotify {
+    color: @green;
+}
+
+#mpris.firefox {
+    color: @peach;
+}
+
+#mpris.chromium {
+    color: @sapphire;
 }
