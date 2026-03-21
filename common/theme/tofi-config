@@ -1,18 +1,23 @@
 prompt-text = "> "
+clip-to-padding = false
 
-text-color = #cdd6f4
+text-color = #6c7086
 prompt-color = #585b70
-selection-color = #cba6f7
-background-color = #181825dd
+selection-color = #cdd6f4
+selection-background = #313244
+selection-background-padding = 4, 10
+selection-background-corner-radius = 4
+background-color = #11111bee
 
 width = 100%
-padding-left = 35%
-padding-top = 30%
 height = 100%
 border-width = 0
 outline-width = 0
-result-spacing = 14
+padding-left = 35%
+padding-top = 26%
+padding-bottom = 20%
+result-spacing = 8
 num-results = 8
-font = Fira Code
-font-variations = "wght 600"
-font-size = 24
+font = JetBrains Mono
+font-variations = "wght 500"
+font-size = 18

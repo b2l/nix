@@ -1,6 +1,7 @@
 #!/bin/sh
 
-# clipboard manager using tofi
-# requires tofi, cliphist and wl-clipboard to function
+# clipboard manager using rofi
+# requires rofi, cliphist and wl-clipboard to function
 
-cliphist list | tofi -c "$HOME/.config/tofi/small-config" | cliphist decode | wl-copy
+export PATH="$HOME/.nix-profile/bin:$PATH"
+cliphist list | rofi -dmenu -p "Clipboard" | cliphist decode | wl-copy

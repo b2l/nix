@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+export PATH="$HOME/.nix-profile/bin:$PATH"
 # Rolling sparkline for memory usage — outputs JSON for waybar custom module
 BARS=(▁ ▂ ▃ ▄ ▅ ▆ ▇ █)
 HISTORY_FILE="/tmp/waybar-mem-history"

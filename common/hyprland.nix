@@ -144,8 +144,8 @@
         "$mainMod SHIFT CTRL, W, exec, start_work.sh"
         "$mainMod, Q, killactive,"
         "$mainMod, RETURN, exec, $TERMINAL"
-        "$mainMod, SPACE, exec, tofi-drun --drun-launch=true"
-        "$mainMod CONTROL, SPACE, exec, tofi-run | sh"
+        "$mainMod, SPACE, exec, rofi -show drun -show-icons"
+        "$mainMod CONTROL, SPACE, exec, rofi -show run"
         "$mainMod, E, exec, $TERMINAL lfo"
         "$mainMod, w, togglegroup"
         "$mainMod SHIFT, F, togglefloating,"
@@ -247,6 +247,7 @@
 
       layerrule = [
         "blur, launcher"
+        "blur, rofi"
         "blur, waybar"
         "ignorezero, waybar"
         "blur, logout_dialog"
@@ -413,6 +414,23 @@
     style = builtins.readFile ./theme/waybar-style.css;
   };
 
+  # Rofi
+  programs.rofi = {
+    enable = true;
+    font = "JetBrains Mono 14";
+    terminal = "foot";
+    theme = ./theme/rofi-theme.rasi;
+    extraConfig = {
+      show-icons = true;
+      icon-theme = "Papirus";
+      drun-display-format = "{name}";
+      display-drun = "";
+      display-run = "";
+      disable-history = false;
+      click-to-exit = true;
+    };
+  };
+
   # Dunst
   services.dunst = {
     enable = true;
@@ -420,29 +438,30 @@
       global = {
         monitor = 0;
         follow = "mouse";
-        width = 350;
-        origin = "bottom-right";
-        offset = "48x48";
+        width = 320;
+        origin = "top-right";
+        offset = "(14, 52)";
         progress_bar = true;
-        progress_bar_height = 10;
-        progress_bar_frame_width = 1;
+        progress_bar_height = 6;
+        progress_bar_frame_width = 0;
         progress_bar_min_width = 150;
-        progress_bar_max_width = 400;
-        progress_bar_corner_radius = 5;
+        progress_bar_max_width = 300;
+        progress_bar_corner_radius = 3;
         indicate_hidden = true;
         shrink = false;
-        separator_height = 2;
-        separator_color = "#11111b";
-        padding = 15;
-        horizontal_padding = 15;
-        frame_width = 0;
-        corner_radius = 10;
+        separator_height = 1;
+        separator_color = "#313244";
+        padding = 12;
+        horizontal_padding = 14;
+        frame_width = 3;
+        frame_color = "#585b70";
+        corner_radius = 6;
         sort = true;
         idle_threshold = 120;
-        font = "Maple Mono 10";
+        font = "JetBrains Mono 10";
         line_height = 0;
         markup = "full";
-        format = "<span weight='bold' font='12'>%s</span>\\n%b";
+        format = "<span weight='bold' font='11'>%s</span>\\n<span color='#a6adc8'>%b</span>";
         alignment = "left";
         vertical_alignment = "center";
         show_age_threshold = 60;
@@ -453,9 +472,10 @@
         hide_duplicate_count = false;
         show_indicators = true;
         icon_position = "left";
-        min_icon_size = 50;
-        max_icon_size = 60;
-        icon_path = "$HOME/.local/share/icons/dunst";
+        min_icon_size = 32;
+        max_icon_size = 40;
+        enable_recursive_icon_lookup = true;
+        icon_theme = "Papirus-Dark";
         sticky_history = true;
         history_length = 20;
         always_run_script = true;
@@ -470,22 +490,23 @@
       };
       experimental.per_monitor_dpi = false;
       urgency_low = {
-        background = "#181825";
-        foreground = "#CDD6F4";
-        highlight = "#CDD6F4";
-        frame_color = "#181825";
+        background = "#181825ee";
+        foreground = "#cdd6f4";
+        highlight = "#89b4fa";
+        frame_color = "#45475a";
         timeout = 5;
       };
       urgency_normal = {
-        background = "#181825";
-        foreground = "#CDD6F4";
-        highlight = "#CDD6F4";
-        frame_color = "#181825";
+        background = "#181825ee";
+        foreground = "#cdd6f4";
+        highlight = "#b4befe";
+        frame_color = "#45475a";
         timeout = 5;
       };
       urgency_critical = {
-        background = "#181825";
-        foreground = "#CDD6F4";
+        background = "#181825ee";
+        foreground = "#cdd6f4";
+        highlight = "#f38ba8";
         frame_color = "#f38ba8";
         timeout = 1000;
       };

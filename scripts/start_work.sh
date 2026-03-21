@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="$HOME/.nix-profile/bin:$PATH"
 
 # Start work apps on specific workspaces
 # firefox -> 1, foot -> 2, slack -> 3, thunderbird -> 4

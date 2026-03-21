@@ -1,0 +1,130 @@
+/* Catppuccin Mocha — fullscreen overlay launcher */
+
+* {
+    crust:     #11111b;
+    base:      #1e1e2e;
+    mantle:    #181825;
+    surface0:  #313244;
+    surface1:  #45475a;
+    surface2:  #585b70;
+    overlay0:  #6c7086;
+    overlay1:  #7f849c;
+    text:      #cdd6f4;
+    subtext0:  #a6adc8;
+    lavender:  #b4befe;
+    blue:      #89b4fa;
+    mauve:     #cba6f7;
+
+    bg:        #11111bee;
+    bg-card:   #1e1e2eee;
+    fg:        @text;
+    fg-dim:    @overlay0;
+    accent:    @mauve;
+    sel-bg:    @surface0;
+    sel-fg:    @text;
+    sep:       @surface1;
+
+    background-color: transparent;
+    text-color:       @fg;
+    font:             "JetBrains Mono 14";
+}
+
+window {
+    fullscreen:       true;
+    background-color: @bg;
+    padding:          200px 30%;
+    location:         center;
+}
+
+mainbox {
+    background-color: @bg-card;
+    border-radius:    6px;
+    padding:          0px;
+    spacing:          0px;
+}
+
+inputbar {
+    background-color: transparent;
+    padding:          14px 20px;
+    spacing:          10px;
+    children:         [ prompt, entry ];
+}
+
+prompt {
+    text-color:       @accent;
+    background-color: transparent;
+}
+
+entry {
+    text-color:        @fg;
+    background-color:  transparent;
+    placeholder:       "Search...";
+    placeholder-color: @fg-dim;
+    cursor:            text;
+}
+
+listview {
+    background-color: transparent;
+    padding:          6px 10px;
+    lines:            8;
+    columns:          1;
+    spacing:          2px;
+    scrollbar:        false;
+    fixed-height:     true;
+    dynamic:          true;
+    cycle:            true;
+    /* Divider line between inputbar and results */
+    border:           1px 0px 0px 0px;
+    border-color:     @sep;
+}
+
+element {
+    padding:          6px 12px;
+    spacing:          10px;
+    border-radius:    4px;
+    background-color: transparent;
+    cursor:           pointer;
+}
+
+element normal.normal,
+element alternate.normal {
+    background-color: transparent;
+    text-color:       @fg-dim;
+}
+
+element selected.normal {
+    background-color: @sel-bg;
+    text-color:       @sel-fg;
+}
+
+element normal.active,
+element alternate.active {
+    text-color: @blue;
+}
+
+element selected.active {
+    background-color: @sel-bg;
+    text-color:       @blue;
+}
+
+element-icon {
+    size:             22px;
+    background-color: transparent;
+    cursor:           inherit;
+}
+
+element-text {
+    background-color: transparent;
+    text-color:       inherit;
+    cursor:           inherit;
+    highlight:        bold underline;
+    vertical-align:   0.5;
+}
+
+message {
+    enabled: false;
+}
+
+mode-switcher {
+    enabled: false;
+}

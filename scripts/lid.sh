@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+export PATH="$HOME/.nix-profile/bin:$PATH"
 
 if [[ $(hyprctl monitors | grep -E -i "Monitor (HDMI|DP)") ]]; then
   if [[ $1 == "open" ]]; then

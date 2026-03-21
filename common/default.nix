@@ -6,6 +6,7 @@
   catppuccin = {
     enable = true;
     flavor = "mocha";
+    rofi.enable = false;
   };
 
   home.packages = with pkgs; [
@@ -19,7 +20,10 @@
     playerctl
     gh
     wlogout
+    (pkgs.papirus-icon-theme.overrideAttrs { meta.priority = 10; })
   ];
+
+  home.sessionVariables.TERMINAL = "foot";
 
   home.file.".local/share/wall.jpg".source = ./theme/wallpaper.jpg;
 

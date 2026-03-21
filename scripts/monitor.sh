@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+export PATH="$HOME/.nix-profile/bin:$PATH"
 
 # Monitor management wrapper for hyprctl
 # Usage: monitor.sh [command] [options]
