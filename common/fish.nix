@@ -156,6 +156,23 @@
         echo "export KPOW_CE_LICENSE_EXPIRY="(aws ssm get-parameter --profile staging --name /kpow-ce/license_expiry --query Parameter.Value --output text)
         echo "export KPOW_CE_LICENSE_SIGNATURE="(aws ssm get-parameter --profile staging --name /kpow-ce/license_signature --query Parameter.Value --output text)
       '';
+
+      # claude code PR workflows
+      review-pr = ''
+        set -l pr $argv[1]
+        test -z "$pr"; and echo "Usage: review-pr <PR_NUMBER>" && return 1
+        claude --tmux \
+          --allowedTools "Read,Glob,Grep,Bash(gh *),Bash(git *),Bash(ls *)" \
+          -p "Read .claude/review-pr.md and follow its instructions for PR #$pr."
+      '';
+
+      fix-pr = ''
+        set -l pr $argv[1]
+        test -z "$pr"; and echo "Usage: fix-pr <PR_NUMBER>" && return 1
+        claude --tmux --worktree "fix-$pr" \
+          --allowedTools "Edit,Write,Read,Glob,Grep,Bash(git *),Bash(gh *),Bash(pnpm *),Bash(ls *)" \
+          -p "Read .claude/fix-pr.md and follow its instructions for PR #$pr."
+      '';
     };
 
     interactiveShellInit = ''

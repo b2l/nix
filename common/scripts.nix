@@ -15,6 +15,7 @@ let
     "volume"
     "sparkline-cpu.sh"
     "sparkline-mem.sh"
+    "pass-menu"
   ];
 in {
   home.file = builtins.listToAttrs (map (name: {

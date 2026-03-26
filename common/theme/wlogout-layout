@@ -8,23 +8,23 @@
     "label" : "suspend",
     "action" : "systemctl suspend",
     "text" : "Suspend",
-    "keybind" : "u"
+    "keybind" : ""
 }
 {
     "label" : "reboot",
     "action" : "systemctl reboot",
     "text" : "Reboot",
-    "keybind" : "r"
+    "keybind" : ""
 }
 {
     "label" : "shutdown",
     "action" : "systemctl poweroff",
     "text" : "Shutdown",
-    "keybind" : "s"
+    "keybind" : ""
 }
 {
     "label" : "logout",
     "action" : "hyprctl dispatch exit",
     "text" : "Logout",
-    "keybind" : "e"
+    "keybind" : ""
 }

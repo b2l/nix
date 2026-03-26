@@ -26,6 +26,9 @@ pkgs.mkShell {
     # Build deps
     pkg-config
 
+    # Notmuch (email indexing)
+    notmuch
+
     # Tauri / WebKitGTK
     webkitgtk_4_1
     gtk3
@@ -45,5 +48,6 @@ pkgs.mkShell {
   shellHook = ''
     export WEBKIT_DISABLE_DMABUF_RENDERER=1
     export GIO_EXTRA_MODULES="${pkgs.glib-networking}/lib/gio/modules"
+    export LIBRARY_PATH="${pkgs.notmuch}/lib:$LIBRARY_PATH"
   '';
 }

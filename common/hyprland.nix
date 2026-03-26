@@ -64,7 +64,8 @@
 
       input = {
         kb_layout = "us,fr";
-        kb_options = "grp:alt_shift_toggle,compose:menu";
+        kb_variant = "dvorak-alt-intl,";
+        kb_options = "grp:alt_shift_toggle,compose:menu,caps:ctrl_modifier";
         follow_mouse = 0;
         touchpad.natural_scroll = true;
         sensitivity = 0;
@@ -153,6 +154,8 @@
         "$mainMod SHIFT, E, exec, tofi-emoji"
         "$mainMod SHIFT, C, exec, hyprpicker -a"
         "$mainMod SHIFT, V, exec, tofi-clip"
+        "$mainMod, B, exec, pass-menu bw"
+        "$mainMod SHIFT, B, exec, pass-menu pb"
         "$mainMod, X, exec, powermenu"
         "$mainMod, ESCAPE, exec, pkill waybar; waybar & disown"
 
@@ -272,16 +275,16 @@
           background-color: rgba(17, 17, 27, 0.85);
       }
       button {
-          background-color: rgba(30, 30, 46, 0.95);
-          border: 1px solid rgba(69, 71, 90, 0.6);
+          background-color: rgba(17, 17, 27, 0.85);
+          border: none;
           border-radius: 6px;
-          margin: 250px 12px;
+          margin: 200px 12px;
           padding-top: 80px;
           color: #6c7086;
-          font-size: 9pt;
+          font-size: 12pt;
           background-repeat: no-repeat;
-          background-position: center 35%;
-          background-size: 28%;
+          background-position: center 38%;
+          background-size: 40%;
           transition: all 250ms cubic-bezier(0.05, 0.7, 0.1, 1);
           outline-style: none;
       }
@@ -301,20 +304,19 @@
           border-color: #cba6f7;
       }
       #lock {
-          background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/lock.png"));
+          background-image: image(url("${./theme/wlogout-icons/lock.png}"));
       }
       #suspend {
-          background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/suspend.png"));
+          background-image: image(url("${./theme/wlogout-icons/suspend.png}"));
       }
       #reboot {
-          background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/reboot.png"));
+          background-image: image(url("${./theme/wlogout-icons/reboot.png}"));
       }
       #shutdown {
-          background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/shutdown.png"));
+          background-image: image(url("${./theme/wlogout-icons/shutdown.png}"));
       }
       #logout {
-          background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/logout.png"));
-          background-position: 55% 35%;
+          background-image: image(url("${./theme/wlogout-icons/logout.png}"));
       }
     '';
   };
@@ -368,7 +370,7 @@
         };
         network = {
           format-wifi = "󰤨 {signalStrength}";
-          format-ethernet = "󰈀";
+          format-ethernet = "󰛳";
           format-disconnected = "󰤭";
           tooltip-format-wifi = "{essid} ({signalStrength}%)";
           tooltip-format-ethernet = "{ifname}: {ipaddr}";
@@ -380,7 +382,7 @@
           tooltip-format = "{desc}";
           on-click = "pavucontrol";
         };
-        "custom/power" = { format = "⏻"; on-click = "sleep 0.15 && powermenu"; };
+        "custom/power" = { format = "󰐥"; on-click = "sleep 0.15 && powermenu"; };
       };
 
       nowPlaying = {

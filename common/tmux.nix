@@ -7,8 +7,14 @@
     mouse = true;
     sensibleOnTop = true;
     keyMode = "vi";
+    terminal = "tmux-256color";
+    escapeTime = 0;
     extraConfig = ''
-      set-option -gw xterm-keys on
+      # Pass extended/kitty key sequences through to applications (neovim)
+      # so that Esc and Alt are disambiguated at the protocol level.
+      set -s extended-keys on
+      set -as terminal-features ',foot:extkeys'
+      set -as terminal-overrides ',foot:RGB'
 
       # Binds
       bind r source-file ~/.config/tmux/tmux.conf \; display-message "Config reloaded..."

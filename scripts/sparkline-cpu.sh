@@ -34,4 +34,4 @@ while IFS= read -r val; do
     spark+="${BARS[$idx]}"
 done < "$HISTORY_FILE"
 
-printf '{"text": "%s %s%%", "tooltip": "CPU: %s%%", "class": "sparkline"}\n' "$spark" "$usage" "$usage"
+printf '{"text": "󰍛 %s %s%%", "tooltip": "CPU: %s%%", "class": "sparkline"}\n' "$spark" "$usage" "$usage"

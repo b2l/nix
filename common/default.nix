@@ -20,6 +20,10 @@
     playerctl
     gh
     wlogout
+    tofi
+    jq
+    rbw
+    go-passbolt-cli
     (pkgs.papirus-icon-theme.overrideAttrs { meta.priority = 10; })
   ];
 

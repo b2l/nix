@@ -1,0 +1,157 @@
+#!/usr/bin/env bash
+export PATH="$HOME/.nix-profile/bin:$PATH"
+set -euo pipefail
+
+BACKEND="${1:?Usage: pass-menu bw|pb}"
+
+# Build entry list
+case "$BACKEND" in
+    bw)
+        # fields: name, user (tab-separated)
+        if ! entries=$(rbw ls --fields name,user 2>/dev/null); then
+            notify-send "pass-menu" "rbw not available or locked"
+            exit 1
+        fi
+        PROMPT="bw"
+        ;;
+    pb)
+        PB_PASS=$(rbw get passbolt.lecomptoirdespharmacies.fr 2>/dev/null) || { notify-send "pass-menu" "Could not get Passbolt passphrase from rbw"; exit 1; }
+        if ! pb_json=$(passbolt list resource -j --userPassword "$PB_PASS" 2>/dev/null); then
+            notify-send "pass-menu" "Passbolt not available"
+            exit 1
+        fi
+        # fields: id, name, username (tab-separated)
+        entries=$(echo "$pb_json" | jq -r '.[] | [.id, .name, .username] | @tsv' 2>/dev/null)
+        PROMPT="pb"
+        ;;
+    *) notify-send "pass-menu" "Unknown backend: $BACKEND"; exit 1 ;;
+esac
+
+[ -z "$entries" ] && notify-send "pass-menu" "No entries found" && exit 1
+
+# Build display: "name (user)" — keep raw entries for lookup
+display_entries=""
+while IFS=$'\t' read -r f1 f2 f3; do
+    case "$BACKEND" in
+        bw)  # f1=name, f2=user
+            label="$f1"
+            [ -n "$f2" ] && label="$label ($f2)"
+            ;;
+        pb)  # f1=id, f2=name, f3=username
+            label="$f2"
+            [ -n "$f3" ] && label="$label ($f3)"
+            ;;
+    esac
+    display_entries+="$label"$'\n'
+done <<< "$entries"
+display_entries="${display_entries%$'\n'}"
+
+THEME='
+window {
+    anchor: north;
+    location: north;
+    width: 100%;
+    background-color: #1e1e2eee;
+    padding: 4px 8px;
+    children: [ horibox ];
+}
+horibox {
+    orientation: horizontal;
+    children: [ prompt, entry, listview ];
+    background-color: transparent;
+    spacing: 8px;
+}
+prompt {
+    text-color: #89b4fa;
+    background-color: transparent;
+    padding: 4px 8px;
+}
+entry {
+    expand: false;
+    width: 12em;
+    text-color: #cdd6f4;
+    background-color: transparent;
+    placeholder: "search...";
+    placeholder-color: #6c7086;
+    padding: 4px 0px;
+}
+listview {
+    layout: horizontal;
+    lines: 100;
+    background-color: transparent;
+    spacing: 4px;
+    scrollbar: false;
+}
+element {
+    padding: 4px 8px;
+    background-color: transparent;
+    text-color: #a6adc8;
+    border-radius: 4px;
+}
+element selected.normal {
+    background-color: #313244;
+    text-color: #cdd6f4;
+}
+element-text {
+    background-color: inherit;
+    text-color: inherit;
+}
+'
+
+# Enter = password (exit 0), Ctrl+Y = username (exit 10), Ctrl+O = totp (exit 11)
+# Ctrl+P / Ctrl+N = navigate (rofi defaults), Escape = cancel (exit 1)
+# Rofi returns the index of the selected item (-format i)
+idx=$(echo "$display_entries" | rofi -dmenu \
+    -no-config \
+    -p "$PROMPT" \
+    -location 2 \
+    -matching fuzzy \
+    -i \
+    -format i \
+    -kb-custom-1 "Control+y" \
+    -kb-custom-2 "Control+o" \
+    -theme-str "$THEME") \
+    && exit_code=0 || exit_code=$?
+
+case $exit_code in
+    0)  MODE="password" ;;
+    10) MODE="username" ;;
+    11) MODE="totp" ;;
+    *)  exit 0 ;;
+esac
+
+[ -z "$idx" ] && exit 0
+
+# Look up raw entry by line index
+raw=$(echo "$entries" | sed -n "$((idx + 1))p")
+[ -z "$raw" ] && exit 1
+
+result=""
+
+case "$BACKEND" in
+    bw)
+        IFS=$'\t' read -r name user <<< "$raw"
+        case "$MODE" in
+            password) result=$(rbw get "$name" ${user:+"$user"}) ;;
+            username) result=$(rbw get --field username "$name" ${user:+"$user"}) ;;
+            totp)     result=$(rbw code "$name" ${user:+"$user"}) ;;
+        esac
+        ;;
+    pb)
+        IFS=$'\t' read -r id _ _ <<< "$raw"
+        case "$MODE" in
+            password) result=$(passbolt get resource --id "$id" -j --userPassword "$PB_PASS" 2>/dev/null | jq -r '.password') ;;
+            username) result=$(passbolt get resource --id "$id" -j --userPassword "$PB_PASS" 2>/dev/null | jq -r '.username') ;;
+            totp)     notify-send "pass-menu" "TOTP not supported for Passbolt"; exit 1 ;;
+        esac
+        ;;
+esac
+
+if [ -n "$result" ]; then
+    echo -n "$result" | wl-copy
+    notify-send "pass-menu" "Copied $MODE" -t 2000
+    # Clear clipboard after 15 seconds
+    (sleep 15 && echo -n "" | wl-copy) &
+else
+    notify-send "pass-menu" "No $MODE found for this entry"
+fi
