@@ -15,6 +15,9 @@ M.base46 = {
 }
 
 M.ui = {
+	tabufline = {
+		enabled = false,
+	},
 	statusline = {
 		modules = {
 			file = function()

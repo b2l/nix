@@ -6,6 +6,9 @@ local o = vim.o
 -- o.cursorlineopt ='both' -- to enable cursorline!
 
 
+-- Always show native tab bar
+o.showtabline = 2
+
 -- Fast key-code timeout (avoids phantom Alt in tmux)
 o.ttimeout = true
 o.ttimeoutlen = 5

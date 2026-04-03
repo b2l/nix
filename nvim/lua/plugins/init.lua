@@ -135,6 +135,7 @@ return {
         "tsx",
         "json",
         "yaml",
+        "java",
       },
     },
   },

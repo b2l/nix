@@ -78,10 +78,15 @@ map("n", "]h", function() harpoon:list():next() end, { desc = "Harpoon next" })
 -- Buffers (<leader>b)
 -- ============================================================================
 map("n", "<leader>bb", builtin.buffers, { desc = "List buffers" })
-map("n", "<leader>bd", function() require("nvchad.tabufline").close_buffer() end, { desc = "Delete buffer" })
+map("n", "<leader>bd", "<cmd>bdelete<CR>", { desc = "Delete buffer" })
 map("n", "<leader>bo", ":%bd|e#|bd#<CR>", { desc = "Delete other buffers" })
-map("n", "<S-l>", function() require("nvchad.tabufline").next() end, { desc = "Next buffer" })
-map("n", "<S-h>", function() require("nvchad.tabufline").prev() end, { desc = "Previous buffer" })
+map("n", "<leader>bn", function()
+  vim.cmd("enew")
+  vim.api.nvim_buf_set_name(0, "[Scratch-" .. vim.api.nvim_get_current_buf() .. "]")
+  vim.bo.buftype = "nofile"
+  vim.bo.bufhidden = "hide"
+  vim.bo.swapfile = false
+end, { desc = "New scratch buffer" })
 
 -- ============================================================================
 -- Code/LSP (<leader>c)
