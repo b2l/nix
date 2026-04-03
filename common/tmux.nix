@@ -1,5 +1,23 @@
 { pkgs, ... }:
 
+let
+  tmux-new-session = pkgs.writeShellScript "tmux-new-session" ''
+    ${pkgs.fish}/bin/fish -c '
+      read -P "Session name: " name
+      and tmux new-session -d -s $name
+      and tmux switch-client -t $name
+    '
+  '';
+
+  tmux-switch-session = pkgs.writeShellScript "tmux-switch-session" ''
+    ${pkgs.fish}/bin/fish -c '
+      tmux list-sessions -F "#{session_name}" \
+        | grep -v "^$(tmux display-message -p "#{session_name}")\$" \
+        | ${pkgs.fzf}/bin/fzf --reverse \
+        | xargs tmux switch-client -t
+    '
+  '';
+in
 {
   programs.tmux = {
     enable = true;
@@ -25,11 +43,8 @@
         -h 80% \
         -E "lazygit"
 
-      bind C-n display-popup \
-        -E 'fish -c "read -P \"Session name: \" name; tmux new-session -d -s $name && tmux switch-client -t $name"'
-
-      bind C-j display-popup \
-        -E "tmux list-sessions | sed -E 's/:.*$//' | grep -v \"^$(tmux display-message -p '#S')$\" | fzf --reverse | xargs tmux switch-client -t"
+      bind C-n display-popup -E "${tmux-new-session}"
+      bind C-j display-popup -E "${tmux-switch-session}"
 
       bind -n -N "Goto window 0" M-0 select-window -T -t 0
       bind -n -N "Goto window 1" M-1 select-window -T -t 1
