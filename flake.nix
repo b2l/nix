@@ -40,6 +40,7 @@
         java-legacy = import ./devshells/java-legacy.nix { inherit pkgs; };
         node20 = import ./devshells/node20.nix { inherit pkgs; };
         node22 = import ./devshells/node22.nix { inherit pkgs; };
+        node24 = import ./devshells/node24.nix { inherit pkgs; };
         python = import ./devshells/python.nix { inherit pkgs; };
         scala = import ./devshells/scala.nix { inherit pkgs; };
         terraform = import ./devshells/terraform.nix { inherit pkgs; };
