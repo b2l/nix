@@ -130,7 +130,7 @@ map("n", "[d", vim.diagnostic.goto_prev, { desc = "Prev diagnostic" })
 -- ============================================================================
 -- Terminal
 -- ============================================================================
--- Disable NvChad terminal mappings (conflicts with mini.move / moving under <leader>t)
+-- Disable NvChad terminal mappings (moving under <leader>t)
 local nomap = vim.keymap.del
 pcall(nomap, "n", "<A-h>")
 pcall(nomap, "n", "<A-v>")
@@ -140,6 +140,22 @@ pcall(nomap, "t", "<A-v>")
 pcall(nomap, "t", "<A-i>")
 pcall(nomap, "n", "<leader>h")
 pcall(nomap, "n", "<leader>v")
+-- Remove NvChad QWERTY window nav (replaced by smart-splits with Dvorak keys)
+pcall(nomap, "n", "<C-h>")
+pcall(nomap, "n", "<C-j>")
+pcall(nomap, "n", "<C-k>")
+pcall(nomap, "n", "<C-l>")
+
+-- Smart-splits: unified neovim/tmux navigation (Dvorak: h=left, t=down, n=up, l=right)
+local splits = require("smart-splits")
+map("n", "<A-h>", splits.move_cursor_left, { desc = "Navigate left" })
+map("n", "<A-t>", splits.move_cursor_down, { desc = "Navigate down" })
+map("n", "<A-n>", splits.move_cursor_up, { desc = "Navigate up" })
+map("n", "<A-l>", splits.move_cursor_right, { desc = "Navigate right" })
+map("t", "<A-h>", splits.move_cursor_left, { desc = "Navigate left" })
+map("t", "<A-t>", splits.move_cursor_down, { desc = "Navigate down" })
+map("t", "<A-n>", splits.move_cursor_up, { desc = "Navigate up" })
+map("t", "<A-l>", splits.move_cursor_right, { desc = "Navigate right" })
 
 -- Horizontal / vertical terminal splits (NvChad)
 map("n", "<leader>th", function()
@@ -155,10 +171,4 @@ local toggle_terminal = function()
 end
 map("n", "<leader>tt", toggle_terminal, { desc = "Toggle floating terminal" })
 map("t", "<leader>tt", toggle_terminal, { desc = "Toggle floating terminal" })
-
--- Navigate out of terminal
-map("t", "<C-h>", "<C-\\><C-n><C-W>h", { desc = "Navigate left" })
-map("t", "<C-j>", "<C-\\><C-n><C-W>j", { desc = "Navigate down" })
-map("t", "<C-k>", "<C-\\><C-n><C-W>k", { desc = "Navigate up" })
-map("t", "<C-l>", "<C-\\><C-n><C-W>l", { desc = "Navigate right" })
 map("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })

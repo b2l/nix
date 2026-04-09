@@ -149,7 +149,6 @@ return {
     config = function()
       require("mini.ai").setup()
       require("mini.surround").setup()
-      require("mini.move").setup()
       require("mini.pairs").setup()
       require("mini.operators").setup {
         replace = {
@@ -259,6 +258,15 @@ return {
         },
       }
     end,
+  },
+
+  -- ============================================================================
+  -- Smart-splits (unified neovim/tmux pane navigation)
+  -- ============================================================================
+  {
+    "mrjones2014/smart-splits.nvim",
+    lazy = false,
+    opts = {},
   },
 
   -- ============================================================================

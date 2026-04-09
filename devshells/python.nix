@@ -6,6 +6,7 @@ pkgs.mkShell {
   buildInputs = with pkgs; [
     python312
     poetry
+    postgresql_16
     postgresql.lib
   ];
 

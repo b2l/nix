@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  imports = [ ./fish.nix ./tmux.nix ./foot.nix ./hyprland.nix ./secrets.nix ./neovim.nix ./scripts.nix ];
+  imports = [ ./fish.nix ./tmux.nix ./foot.nix ./hyprland.nix ./secrets.nix ./neovim.nix ./scripts.nix ./pomodoro.nix ];
 
   catppuccin = {
     enable = true;
@@ -30,6 +30,16 @@
   home.sessionVariables.TERMINAL = "foot";
 
   home.file.".local/share/wall.jpg".source = ./theme/wallpaper.jpg;
+
+  # rbw (Bitwarden CLI) — uses custom pinentry that reads master password from gnome-keyring
+  xdg.configFile."rbw/config.json".text = builtins.toJSON {
+    email = "nicolas@ling.fr";
+    base_url = "https://api.bitwarden.eu";
+    identity_url = "https://identity.bitwarden.eu";
+    lock_timeout = 3600;
+    sync_interval = 3600;
+    pinentry = "pinentry-rbw-keyring";
+  };
 
   programs.direnv = {
     enable = true;

@@ -185,6 +185,29 @@ window#waybar.mainbar .modules-center {
     color: @yellow;
 }
 
+/* ── Pomodoro (in modules-center, next to clock) ── */
+#custom-pomodoro {
+    padding: 0 10px;
+    margin: 0 0 0 8px;
+    font-size: 14px;
+    font-weight: bold;
+    color: @peach;
+}
+
+#custom-pomodoro.idle {
+    padding: 0;
+    margin: 0;
+    min-width: 0;
+}
+
+#custom-pomodoro.running {
+    color: @peach;
+}
+
+#custom-pomodoro.done {
+    color: @red;
+}
+
 /* ── Language ── */
 #language {
     color: @subtext0;

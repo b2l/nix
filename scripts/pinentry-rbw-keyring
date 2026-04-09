@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# Custom pinentry that reads rbw master password from gnome-keyring.
+# Falls back to pinentry-gnome3 if no keyring entry found.
+set -euo pipefail
+
+password=$(secret-tool lookup application rbw type master-password 2>/dev/null) || password=""
+
+if [ -z "$password" ]; then
+    exec pinentry-gnome3 "$@"
+fi
+
+# Speak the Assuan/pinentry protocol, returning the stored password
+echo "OK Pleased to meet you"
+while IFS= read -r cmd; do
+    case "${cmd%%[ ]*}" in
+        BYE)
+            echo "OK closing connection"
+            exit 0
+            ;;
+        GETPIN)
+            # Percent-encode %, CR, LF per Assuan protocol
+            encoded="${password//%/%25}"
+            encoded="${encoded//$'\r'/%0D}"
+            encoded="${encoded//$'\n'/%0A}"
+            echo "D $encoded"
+            echo "OK"
+            ;;
+        *)
+            echo "OK"
+            ;;
+    esac
+done

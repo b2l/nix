@@ -34,7 +34,17 @@ in
       set -as terminal-features ',foot:extkeys'
       set -as terminal-overrides ',foot:RGB'
 
+      # Smart pane switching with awareness of Neovim splits (Dvorak: h/t/n/l)
+      # @pane-is-vim is set automatically by smart-splits.nvim
+      bind-key -n M-h if -F "#{@pane-is-vim}" 'send-keys M-h' 'select-pane -L'
+      bind-key -n M-t if -F "#{@pane-is-vim}" 'send-keys M-t' 'select-pane -D'
+      bind-key -n M-n if -F "#{@pane-is-vim}" 'send-keys M-n' 'select-pane -U'
+      bind-key -n M-l if -F "#{@pane-is-vim}" 'send-keys M-l' 'select-pane -R'
+
       # Binds
+      bind c new-window -c "#{pane_current_path}"
+      bind '"' split-window -v -c "#{pane_current_path}"
+      bind % split-window -h -c "#{pane_current_path}"
       bind r source-file ~/.config/tmux/tmux.conf \; display-message "Config reloaded..."
 
       bind C-g display-popup \

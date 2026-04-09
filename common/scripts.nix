@@ -16,6 +16,8 @@ let
     "sparkline-cpu.sh"
     "sparkline-mem.sh"
     "pass-menu"
+    "pinentry-rbw-keyring"
+    "pomodoro.sh"
   ];
 in {
   home.file = builtins.listToAttrs (map (name: {

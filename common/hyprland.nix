@@ -157,7 +157,7 @@
         "$mainMod, B, exec, pass-menu bw"
         "$mainMod SHIFT, B, exec, pass-menu pb"
         "$mainMod, X, exec, powermenu"
-        "$mainMod, ESCAPE, exec, pkill waybar; waybar & disown"
+        "$mainMod CONTROL, ESCAPE, exec, pkill waybar; waybar & disown"
 
         # Media
         ", XF86AudioPrev, exec, playerctl previous"
@@ -217,8 +217,8 @@
         "CTRL $mainMod, l, movecurrentworkspacetomonitor, r"
 
         # Special workspace
-        "$mainMod, S, togglespecialworkspace, magic"
-        "$mainMod SHIFT, S, movetoworkspace, special:magic"
+        "$mainMod, ESCAPE, togglespecialworkspace, magic"
+        "$mainMod SHIFT, ESCAPE, movetoworkspace, special:magic"
 
         # Mouse scroll
         "$mainMod, mouse_down, workspace, e+1"
@@ -335,13 +335,19 @@
         margin-right = 10;
         spacing = 6;
         modules-left = [ "hyprland/workspaces" "hyprland/window" ];
-        modules-center = [ "clock" ];
+        modules-center = [ "clock" "custom/pomodoro" ];
         modules-right = [
           "custom/cpu-spark" "custom/sep" "custom/mem-spark"
           "custom/sep" "tray" "pulseaudio" "custom/sep" "network"
           "custom/sep" "battery" "custom/sep" "custom/donotdisturb"
           "custom/sep" "hyprland/language" "custom/sep" "custom/power"
         ];
+        "custom/pomodoro" = {
+          format = "{}";
+          return-type = "json";
+          exec = "pomodoro.sh";
+          interval = 1;
+        };
         "custom/cpu-spark" = {
           format = "{}";
           return-type = "json";
