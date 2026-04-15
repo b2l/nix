@@ -2,26 +2,22 @@
 
 let
   tmux-new-session = pkgs.writeShellScript "tmux-new-session" ''
-    ${pkgs.fish}/bin/fish -c '
-      read -P "Session name: " name
-      and tmux new-session -d -s $name
-      and tmux switch-client -t $name
-    '
+    read -r -p "Session name: " name || exit 1
+    [ -z "$name" ] && exit 1
+    tmux new-session -d -s "$name" && tmux switch-client -t "$name"
   '';
 
   tmux-switch-session = pkgs.writeShellScript "tmux-switch-session" ''
-    ${pkgs.fish}/bin/fish -c '
-      tmux list-sessions -F "#{session_name}" \
-        | grep -v "^$(tmux display-message -p "#{session_name}")\$" \
-        | ${pkgs.fzf}/bin/fzf --reverse \
-        | xargs tmux switch-client -t
-    '
+    tmux list-sessions -F "#{session_name}" \
+      | grep -v "^$(tmux display-message -p "#{session_name}")\$" \
+      | ${pkgs.fzf}/bin/fzf --reverse \
+      | xargs tmux switch-client -t
   '';
 in
 {
   programs.tmux = {
     enable = true;
-    shell = "${pkgs.fish}/bin/fish";
+    shell = "${pkgs.bashInteractive}/bin/bash";
     mouse = true;
     sensibleOnTop = true;
     keyMode = "vi";

@@ -30,7 +30,8 @@ This repository manages a declarative, high-performance development environment 
 ├── .sops.yaml           # sops-nix encryption rules
 ├── common/              # Shared configuration modules
 │   ├── default.nix      # Core package list and imports
-│   ├── fish.nix         # Fish shell, aliases, starship, fzf, direnv
+│   ├── bash.nix         # Bash shell, aliases, functions, starship, fzf, direnv
+│   ├── fish.nix         # Fish shell (kept available; not launched by default)
 │   ├── tmux.nix         # Tmux configuration
 │   ├── foot.nix         # Foot terminal
 │   ├── hyprland.nix     # Hyprland, waybar, dunst, tofi, hypridle, hyprpaper
@@ -71,11 +72,11 @@ Clone this repo and apply the configuration for the first time:
 nix run home-manager/master -- switch --flake .#work-pc -b backup
 ```
 
-### 4. Set Fish as Default Shell
+### 4. Set Bash as Default Shell
 Home Manager can't manage the login shell on non-NixOS systems — this is a one-time manual step:
 ```bash
-echo "$HOME/.nix-profile/bin/fish" | sudo tee -a /etc/shells
-sudo chsh -s "$HOME/.nix-profile/bin/fish" $USER
+echo "$HOME/.nix-profile/bin/bash" | sudo tee -a /etc/shells
+sudo chsh -s "$HOME/.nix-profile/bin/bash" $USER
 ```
 
 ---

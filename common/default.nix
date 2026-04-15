@@ -1,7 +1,43 @@
 { pkgs, ... }:
 
 {
-  imports = [ ./fish.nix ./tmux.nix ./foot.nix ./hyprland.nix ./secrets.nix ./neovim.nix ./scripts.nix ./pomodoro.nix ];
+  imports = [ ./bash.nix ./fish.nix ./tmux.nix ./foot.nix ./hyprland.nix ./secrets.nix ./neovim.nix ./scripts.nix ./pomodoro.nix ];
+
+  # Shared aliases — applied to every shell home-manager manages (bash + fish).
+  home.shellAliases = {
+    # nix
+    nhs = "nh home switch -c work-pc";
+
+    # safe commands
+    cp = "cp -iv";
+    mv = "mv -iv";
+    rm = "rm -vI";
+    bc = "bc -ql";
+    mkd = "mkdir -pv";
+
+    # lsd
+    ls = "lsd";
+    l = "lsd -l";
+    la = "lsd -a";
+    lla = "lsd -la";
+    lt = "lsd --tree";
+
+    # tool replacements
+    cat = "bat";
+    grep = "grep --color=always";
+    locate = "plocate";
+
+    # apps
+    v = "$EDITOR";
+    vim = "$EDITOR";
+    nb = "newsboat";
+    za = "zathura";
+    code = "vscodium";
+    ytdl = "yt-dlp --no-mtime";
+
+    # git
+    gf = "git-flow";
+  };
 
   catppuccin = {
     enable = true;
@@ -53,8 +89,12 @@
   programs.lazygit = {
     enable = true;
     settings = {
-      git.pagers.pager = "delta --dark --paging=never --line-numbers --hyperlinks --hyperlinks-file-link-format=\"lazygit-edit://{path}:{line}\"";
-      git.pagers.colorArg = "never";
+      git.pagers = [
+        {
+          pager = "delta --dark --paging=never --line-numbers --hyperlinks --hyperlinks-file-link-format=\"lazygit-edit://{path}:{line}\"";
+          colorArg = "never";
+        }
+      ];
     };
   };
 
@@ -133,5 +173,26 @@
         contents.user.email = "nicolas@ling.fr";
       }
     ];
+  };
+
+  programs.jujutsu = {
+    enable = true;
+    settings = {
+      user = {
+        name = "Nicolas Medda";
+        email = "nicolas@lecomptoirdespharmacies.fr";
+      };
+      ui = {
+        default-command = "log";
+        diff-editor = ":builtin";
+        pager = "delta";
+      };
+      "--scope" = [
+        {
+          "--when".repositories = [ "~/Perso" ];
+          user.email = "nicolas@ling.fr";
+        }
+      ];
+    };
   };
 }

@@ -18,6 +18,7 @@ let
     "pass-menu"
     "pinentry-rbw-keyring"
     "pomodoro.sh"
+    "pomodoro-menu.sh"
   ];
 in {
   home.file = builtins.listToAttrs (map (name: {

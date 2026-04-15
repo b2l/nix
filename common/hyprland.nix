@@ -54,7 +54,7 @@
         "XDG_CURRENT_DESKTOP,Hyprland"
         "XDG_SESSION_TYPE,wayland"
         "XDG_SESSION_DESKTOP,Hyprland"
-        "SHELL,${pkgs.fish}/bin/fish"
+        "SHELL,${pkgs.bashInteractive}/bin/bash"
       ];
 
       monitor = [
@@ -156,6 +156,7 @@
         "$mainMod SHIFT, V, exec, tofi-clip"
         "$mainMod, B, exec, pass-menu bw"
         "$mainMod SHIFT, B, exec, pass-menu pb"
+        "$mainMod, T, exec, pomodoro-menu.sh"
         "$mainMod, X, exec, powermenu"
         "$mainMod CONTROL, ESCAPE, exec, pkill waybar; waybar & disown"
 
@@ -339,7 +340,8 @@
         modules-right = [
           "custom/cpu-spark" "custom/sep" "custom/mem-spark"
           "custom/sep" "tray" "pulseaudio" "custom/sep" "network"
-          "custom/sep" "battery" "custom/sep" "custom/donotdisturb"
+          "custom/sep" "battery" "custom/sep" "power-profiles-daemon"
+          "custom/sep" "custom/donotdisturb"
           "custom/sep" "hyprland/language" "custom/sep" "custom/power"
         ];
         "custom/pomodoro" = {
@@ -389,6 +391,15 @@
           on-click = "pavucontrol";
         };
         "custom/power" = { format = "󰐥"; on-click = "sleep 0.15 && powermenu"; };
+        power-profiles-daemon = {
+          format = "{icon}";
+          tooltip-format = "Power profile: {profile}\nDriver: {driver}";
+          format-icons = {
+            performance = "󰓅";
+            balanced = "󰾅";
+            power-saver = "󰌪";
+          };
+        };
       };
 
       nowPlaying = {

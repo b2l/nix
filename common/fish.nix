@@ -5,45 +5,12 @@
     enable = true;
 
     shellAliases = {
-      # nix
-      nhs = "nh home switch -c work-pc";
-
-      # safe commands
-      cp = "cp -iv";
-      mv = "mv -iv";
-      rm = "rm -vI";
-      bc = "bc -ql";
-      mkd = "mkdir -pv";
-
-      # lsd
-      ls = "lsd";
-      l = "lsd -l";
-      la = "lsd -a";
-      lla = "lsd -la";
-      lt = "lsd --tree";
-
-      # tool replacements
-      cat = "bat";
-      grep = "grep --color=always";
-      locate = "plocate";
-
-      # apps
-      v = "$EDITOR";
-      vim = "$EDITOR";
-      nb = "newsboat";
-      za = "zathura";
-      code = "vscodium";
-      ytdl = "yt-dlp --no-mtime";
-
       # neovim configs
       avante = "NVIM_APPNAME=nvim-avante nvim";
       nvchad = "NVIM_APPNAME=nvim-nvchad nvim";
 
       # docker
       dps = ''docker ps -a --format "table {{.ID}}\t{{.Names}}\t{{.Status}}"'';
-
-      # git
-      gf = "git-flow";
 
       # misc
       chrome-debug = ''google-chrome --remote-debugging-port=9222 --user-data-dir="$HOME/.chrome-debug-profile" --no-first-run --no-default-browser-check'';
@@ -218,23 +185,5 @@
     '';
   };
 
-  programs.starship = {
-    enable = true;
-    settings = {
-      nix_shell = {
-        format = "via [$symbol$name]($style) ";
-        symbol = "❄️ ";
-      };
-    };
-  };
-
-  programs.fzf = {
-    enable = true;
-    enableFishIntegration = true;
-  };
-
-  programs.direnv = {
-    enable = true;
-    nix-direnv.enable = true;
-  };
+  programs.fzf.enableFishIntegration = true;
 }

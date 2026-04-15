@@ -124,6 +124,7 @@ window#waybar.mainbar .modules-center {
 #battery,
 #network,
 #pulseaudio,
+#power-profiles-daemon,
 #custom-cpu-spark,
 #custom-mem-spark,
 #custom-donotdisturb,
@@ -180,6 +181,19 @@ window#waybar.mainbar .modules-center {
     color: @red;
 }
 
+/* ── Power profile ── */
+#power-profiles-daemon.performance {
+    color: @red;
+}
+
+#power-profiles-daemon.balanced {
+    color: @yellow;
+}
+
+#power-profiles-daemon.power-saver {
+    color: @green;
+}
+
 /* ── DND ── */
 #custom-donotdisturb {
     color: @yellow;
@@ -206,6 +220,10 @@ window#waybar.mainbar .modules-center {
 
 #custom-pomodoro.done {
     color: @red;
+}
+
+#custom-pomodoro.break {
+    color: @sky;
 }
 
 /* ── Language ── */
