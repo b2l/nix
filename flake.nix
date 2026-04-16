@@ -20,9 +20,29 @@
 
   outputs = { nixpkgs, home-manager, catppuccin, nixgl, sops-nix, ... }:
     let
+      system = "x86_64-linux";
       pkgs = import nixpkgs {
-        system = "x86_64-linux";
+        inherit system;
         overlays = [ nixgl.overlay ];
+      };
+      sharedHomeModules = [
+        catppuccin.homeModules.catppuccin
+        sops-nix.homeManagerModules.sops
+      ];
+      mkNixos = hostPath: nixpkgs.lib.nixosSystem {
+        inherit system;
+        modules = [
+          hostPath
+          sops-nix.nixosModules.sops
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.backupFileExtension = "hm-backup";
+            home-manager.sharedModules = sharedHomeModules;
+            home-manager.users.nicolas = import (builtins.dirOf hostPath + "/home.nix");
+          }
+        ];
       };
     in {
       homeConfigurations."work-pc" = home-manager.lib.homeManagerConfiguration {
@@ -32,6 +52,10 @@
           catppuccin.homeModules.catppuccin
           sops-nix.homeManagerModules.sops
         ];
+      };
+
+      nixosConfigurations = {
+        nixos-vm = mkNixos ./hosts/nixos-vm/configuration.nix;
       };
 
       devShells.x86_64-linux = {
