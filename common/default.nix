@@ -57,7 +57,7 @@
     jq
     rbw
     go-passbolt-cli
-    (pkgs.papirus-icon-theme.overrideAttrs { meta.priority = 10; })
+    # (pkgs.papirus-icon-theme.overrideAttrs { meta.priority = 10; })
 
     # GUI apps
     google-chrome
