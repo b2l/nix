@@ -249,13 +249,13 @@
 
       bindirt = [ ", Caps_Lock, exec, pkill -SIGRTMIN+1 waybar" ];
 
-      layerrule = [
-        "blur, launcher"
-        "blur, rofi"
-        "blur, waybar"
-        "ignorezero, waybar"
-        "blur, logout_dialog"
-      ];
+      # layerrule = [
+      #   "blur, launcher"
+      #   "blur, rofi"
+      #   "blur, waybar"
+      #   "ignorezero, waybar"
+      #   "blur, logout_dialog"
+      # ];
     };
   };
 
