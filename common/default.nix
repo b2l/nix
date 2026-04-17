@@ -72,7 +72,7 @@
     hyprpaper
     hypridle
     dunst
-    rofi-wayland
+    rofi
   ];
 
   home.sessionVariables.TERMINAL = "foot";
