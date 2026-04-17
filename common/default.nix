@@ -30,10 +30,7 @@
     # apps
     v = "$EDITOR";
     vim = "$EDITOR";
-    nb = "newsboat";
-    za = "zathura";
     code = "vscodium";
-    ytdl = "yt-dlp --no-mtime";
 
     # git
     gf = "git-flow";
@@ -61,6 +58,21 @@
     rbw
     go-passbolt-cli
     (pkgs.papirus-icon-theme.overrideAttrs { meta.priority = 10; })
+
+    # GUI apps
+    google-chrome
+    slack
+    vscodium
+
+    # Wayland / Hyprland utilities
+    wl-clipboard
+    cliphist
+    grimblast
+    hyprpicker
+    hyprpaper
+    hypridle
+    dunst
+    rofi-wayland
   ];
 
   home.sessionVariables.TERMINAL = "foot";
