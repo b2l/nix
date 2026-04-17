@@ -25,7 +25,7 @@
   users.users.nicolas = {
     isNormalUser = true;
     description = "Nicolas";
-    extraGroups = [ "wheel" "networkmanager" "docker" "video" "audio" "input" ];
+    extraGroups = [ "wheel" "networkmanager" "docker" "libvirtd" "video" "audio" "input" ];
     shell = pkgs.bashInteractive;
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEi9c3chna9YVlX6kMWy0ilgUsfL9X8H0iZ2/Clo2mkq"
@@ -68,6 +68,16 @@
 
   # Docker
   virtualisation.docker.enable = true;
+
+  # Libvirt / QEMU (virt-manager)
+  virtualisation.libvirtd.enable = true;
+  programs.virt-manager.enable = true;
+
+  # Printing
+  services.printing.enable = true;
+
+  # Firmware updates
+  services.fwupd.enable = true;
 
   # OpenSSH — convenient for VM, safe on laptop (key-auth only)
   services.openssh = {

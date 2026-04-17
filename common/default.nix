@@ -63,6 +63,13 @@
     google-chrome
     slack
     vscodium
+    firefox
+    signal-desktop
+    spotify
+    gimp
+    libreoffice
+    pavucontrol
+    virt-manager
 
     # Wayland / Hyprland utilities
     wl-clipboard
@@ -73,6 +80,16 @@
     hypridle
     dunst
     rofi
+    grim
+    slurp
+    satty
+    wlr-randr
+    wlsunset
+
+    # CLI tools
+    httpie
+    ansible
+    pandoc
   ];
 
   home.sessionVariables.TERMINAL = "foot";
