@@ -1,5 +1,8 @@
 { pkgs, ... }:
 
+let
+  sfw = pkgs.callPackage ./pkgs/sfw.nix {};
+in
 {
   imports = [ ./bash.nix ./fish.nix ./tmux.nix ./foot.nix ./hyprland.nix ./secrets.nix ./neovim.nix ./scripts.nix ./pomodoro.nix ];
 
@@ -47,6 +50,7 @@
     lsd
     nodejs_22
     pnpm
+    sfw
     btop
     mpv
     lazygit

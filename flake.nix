@@ -16,9 +16,14 @@
       url = "github:nix-community/nixGL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { nixpkgs, home-manager, catppuccin, nixgl, sops-nix, ... }:
+  outputs = inputs@{ nixpkgs, home-manager, catppuccin, nixgl, sops-nix, ... }:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs {
@@ -31,6 +36,7 @@
       ];
       mkNixos = hostPath: nixpkgs.lib.nixosSystem {
         inherit system;
+        specialArgs = { inherit inputs; };
         modules = [
           hostPath
           sops-nix.nixosModules.sops
@@ -56,6 +62,7 @@
 
       nixosConfigurations = {
         nixos-vm = mkNixos ./hosts/nixos-vm/configuration.nix;
+        nixos-laptop = mkNixos ./hosts/nixos-laptop/configuration.nix;
       };
 
       devShells.x86_64-linux = {
