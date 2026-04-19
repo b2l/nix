@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+read -r -p "Session name: " name || exit 1
+[ -z "$name" ] && exit 1
+tmux new-session -d -s "$name" && tmux switch-client -t "$name"

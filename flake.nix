@@ -6,7 +6,9 @@
     # when you're ready to audit the release notes.
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
     home-manager = {
-      url = "github:nix-community/home-manager";
+      # Track the branch that matches nixpkgs above. Bump both together when
+      # upgrading to the next NixOS release.
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     catppuccin.url = "github:catppuccin/nix";

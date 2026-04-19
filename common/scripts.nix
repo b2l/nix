@@ -21,6 +21,8 @@ let
     "pomodoro-menu.sh"
     "check-nixos-channel"
     "waybar-updates"
+    "tmux-new-session"
+    "tmux-switch-session"
   ];
 in {
   home.file = builtins.listToAttrs (map (name: {

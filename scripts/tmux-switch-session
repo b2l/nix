@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+tmux list-sessions -F "#{session_name}" \
+  | grep -v "^$(tmux display-message -p "#{session_name}")\$" \
+  | fzf --reverse \
+  | xargs tmux switch-client -t
