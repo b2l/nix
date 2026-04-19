@@ -131,9 +131,16 @@
   system.autoUpgrade = {
     enable = true;
     flake = "/home/nicolas/Perso/nix";
+    # Explicit input list (not --recreate-lock-file) so adding a new flake
+    # input forces a deliberate edit here — drift stays visible.
     flags = [
-      "--update-input" "nixpkgs"  # re-resolve the pinned branch HEAD
-      "-L"                          # print build logs (visible in journalctl)
+      "--update-input" "nixpkgs"
+      "--update-input" "home-manager"
+      "--update-input" "catppuccin"
+      "--update-input" "sops-nix"
+      "--update-input" "nixgl"
+      "--update-input" "nixos-hardware"
+      "-L"
     ];
     dates = "04:00";
     persistent = true;              # run on wake if the slot was missed

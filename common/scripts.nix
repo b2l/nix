@@ -19,6 +19,8 @@ let
     "pinentry-rbw-keyring"
     "pomodoro.sh"
     "pomodoro-menu.sh"
+    "check-nixos-channel"
+    "waybar-updates"
   ];
 in {
   home.file = builtins.listToAttrs (map (name: {

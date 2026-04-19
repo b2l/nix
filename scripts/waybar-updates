@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+# waybar-updates — read nvchecker's state and emit a waybar JSON status.
+#
+# Output contract (waybar `return-type = "json"`):
+#   - text:    short label shown in the bar (empty = module hidden)
+#   - tooltip: multi-line detail
+#   - class:   CSS hook (none|channel|pkg|both)
+#
+# Silent when everything is up-to-date. Never hits the network — nvchecker's
+# systemd user timer does that once a day.
+
+set -u
+FLAKE_DIR="${FLAKE_DIR:-$HOME/Perso/nix}"
+STATE="$HOME/.cache/nvchecker/newver.json"
+
+empty='{"text":"","tooltip":"","class":"none"}'
+
+# No state yet = nvchecker hasn't run. Silent rather than noisy.
+if [ ! -f "$STATE" ]; then
+  printf '%s\n' "$empty"
+  exit 0
+fi
+
+# Pinned versions (local grep — fragile but scoped).
+# Scope the grep to the nixpkgs.url line — a stray comment that mentions
+# "nixos-26.05" as an example would otherwise match first.
+pinned_channel=$(grep -E 'nixpkgs\.url' "$FLAKE_DIR/flake.nix" 2>/dev/null \
+  | grep -oE 'nixos-[0-9]+\.[0-9]+' | head -1 | sed 's/^nixos-//')
+pinned_sfw=$(grep -oE 'version = "[^"]+"' "$FLAKE_DIR/common/pkgs/sfw.nix" 2>/dev/null \
+  | head -1 | sed 's/^version = "//; s/"$//')
+
+# Upstream versions from nvchecker state. Strip a leading "v" if present.
+latest_channel=$(jq -r '.data["nixos-stable"].version // empty' "$STATE" 2>/dev/null)
+latest_sfw=$(jq -r '.data.sfw.version // empty' "$STATE" 2>/dev/null | sed 's/^v//')
+
+channel_drift=""
+sfw_drift=""
+[ -n "$pinned_channel" ] && [ -n "$latest_channel" ] && [ "$pinned_channel" != "$latest_channel" ] \
+  && channel_drift=1
+[ -n "$pinned_sfw" ] && [ -n "$latest_sfw" ] && [ "$pinned_sfw" != "$latest_sfw" ] \
+  && sfw_drift=1
+
+if [ -z "$channel_drift" ] && [ -z "$sfw_drift" ]; then
+  printf '%s\n' "$empty"
+  exit 0
+fi
+
+# Channel bump is the rare, important signal → show it in the bar text.
+# sfw bumps go to tooltip only unless there's no channel bump.
+text=""
+class=""
+lines=()
+if [ -n "$channel_drift" ]; then
+  text=" $latest_channel"
+  class="channel"
+  lines+=("NixOS stable: $pinned_channel → $latest_channel  (bump nixpkgs.url)")
+fi
+if [ -n "$sfw_drift" ]; then
+  [ -z "$text" ] && text="󰏔 sfw" && class="pkg"
+  [ "$class" = "channel" ] && class="both"
+  lines+=("sfw: $pinned_sfw → $latest_sfw  (nix-update sfw)")
+fi
+
+tooltip=$(printf '%s\n' "${lines[@]}")
+
+jq -cn --arg text "$text" --arg tooltip "$tooltip" --arg class "$class" \
+  '{text: $text, tooltip: $tooltip, class: $class}'

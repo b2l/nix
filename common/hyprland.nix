@@ -341,6 +341,7 @@
           "custom/sep" "tray" "pulseaudio" "custom/sep" "network"
           "custom/sep" "battery" "custom/sep" "power-profiles-daemon"
           "custom/sep" "custom/donotdisturb"
+          "custom/sep" "custom/updates"
           "custom/sep" "hyprland/language" "custom/sep" "custom/power"
         ];
         "custom/pomodoro" = {
@@ -363,6 +364,16 @@
         };
         "custom/sep" = { format = " "; tooltip = false; };
         "custom/donotdisturb" = { exec = "donotdisturb.sh"; format = "{}"; interval = 1; return-type = "json"; signal = 1; on-click = "dunstctl set-paused toggle"; };
+        "custom/updates" = {
+          exec = "waybar-updates";
+          format = "{}";
+          return-type = "json";
+          interval = 3600;
+          # nvchecker refreshes state daily; hourly widget poll keeps the
+          # displayed text in sync soon after a bump lands on disk.
+          on-click = "xdg-open https://nixos.org/manual/nixos/stable/release-notes";
+          tooltip = true;
+        };
         "hyprland/window".separate-outputs = true;
         "hyprland/workspaces" = { disable-scroll = true; all-outputs = true; on-click = "activate"; };
         tray.spacing = 10;

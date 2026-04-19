@@ -4,9 +4,9 @@ let
   sfw = pkgs.callPackage ./pkgs/sfw.nix {};
 in
 {
-  imports = [ ./bash.nix ./fish.nix ./tmux.nix ./foot.nix ./hyprland.nix ./secrets.nix ./neovim.nix ./scripts.nix ./pomodoro.nix ];
+  imports = [ ./bash.nix ./tmux.nix ./foot.nix ./hyprland.nix ./secrets.nix ./neovim.nix ./scripts.nix ./pomodoro.nix ./nvchecker.nix ];
 
-  # Shared aliases — applied to every shell home-manager manages (bash + fish).
+  # Shared aliases — applied to every shell home-manager manages.
   home.shellAliases = {
     # nix
     nhs = "nh home switch -c work-pc";

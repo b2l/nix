@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# check-nixos-channel — emit the newest nixos-YY.MM branch's version component
+# (e.g., "26.05"). Used by nvchecker's `cmd` source to detect new NixOS stable
+# channel cuts before the official release announcement.
+#
+# Paginates because nixpkgs has 400+ branches and the nixos-* ones scatter
+# across pages. Filters out -small / -aarch64 / other variants to keep only
+# canonical stable channels.
+set -euo pipefail
+gh api '/repos/NixOS/nixpkgs/branches?per_page=100' --paginate --jq '
+  .[].name
+  | select(test("^nixos-[0-9]+\\.[0-9]+$"))
+  | ltrimstr("nixos-")
+' | sort -V | tail -1

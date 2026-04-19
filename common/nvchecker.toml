@@ -1,0 +1,12 @@
+[__config__]
+oldver = "~/.cache/nvchecker/oldver.json"
+newver = "~/.cache/nvchecker/newver.json"
+
+[nixos-stable]
+source = "cmd"
+cmd = "check-nixos-channel"
+
+[sfw]
+source = "github"
+github = "SocketDev/sfw-free"
+use_latest_release = true
