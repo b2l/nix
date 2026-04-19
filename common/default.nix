@@ -110,6 +110,12 @@ in
     pinentry = "pinentry-rbw-keyring";
   };
 
+  # Global gitignore — git picks up ~/.config/git/ignore automatically (XDG default)
+  xdg.configFile."git/ignore".text = ''
+    .envrc
+    .direnv/
+  '';
+
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
@@ -168,6 +174,7 @@ in
       core = {
         autocrlf = "input";
         editor = "nvim";
+        excludesFile = "~/.config/git/ignore";
       };
       gui.encoding = "utf-8";
       color.ui = true;
