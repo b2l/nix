@@ -124,4 +124,21 @@
     dates = "weekly";
     options = "--delete-older-than 30d";
   };
+
+  # Automatic system upgrade — tracks the pinned nixos-25.11 branch in flake.nix.
+  # Picks up point-release fixes without manual intervention. Does NOT cross
+  # major versions (25.11 → 26.05) — that bump is manual in flake.nix.
+  system.autoUpgrade = {
+    enable = true;
+    flake = "/home/nicolas/Perso/nix";
+    flags = [
+      "--update-input" "nixpkgs"  # re-resolve the pinned branch HEAD
+      "-L"                          # print build logs (visible in journalctl)
+    ];
+    dates = "04:00";
+    persistent = true;              # run on wake if the slot was missed
+    randomizedDelaySec = "45min";
+    allowReboot = false;            # never auto-reboot; new kernel lands on next boot
+    operation = "switch";
+  };
 }
