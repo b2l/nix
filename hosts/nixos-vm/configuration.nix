@@ -1,9 +1,11 @@
-{ ... }:
+{ inputs, ... }:
 
 {
   imports = [
     ./hardware-configuration.nix
+    ./disk.nix
     ../../common/nixos
+    inputs.disko.nixosModules.disko
   ];
 
   networking.hostName = "nixos-vm";
