@@ -43,6 +43,7 @@ in
     enable = true;
     flavor = "mocha";
     rofi.enable = false;
+    opencode.enable = false;
   };
 
   home.packages = with pkgs; [

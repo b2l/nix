@@ -54,8 +54,8 @@
       export PATH
       unset -f _prepend_path
 
-      # flake path for nh
-      export NH_HOME_FLAKE="$HOME/Perso/nix"
+      # flake path for nh — NH_FLAKE covers both `nh os` and `nh home`.
+      export NH_FLAKE="$HOME/Perso/nix"
 
       # lcdp work aliases
       alias dc="cd $PROJ_DIR/lcdp-docker-compose"
