@@ -40,8 +40,9 @@ in
   };
 
   catppuccin = {
-    enable = false;  # TEMP: catppuccin's opencode module references a home-manager option that doesn't exist in 25.11
+    enable = true;
     flavor = "mocha";
+    rofi.enable = false;
   };
 
   home.packages = with pkgs; [

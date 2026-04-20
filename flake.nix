@@ -12,7 +12,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     catppuccin = {
-      url = "github:catppuccin/nix";
+      # Pinned to release branch matching home-manager above. Bump together.
+      url = "github:catppuccin/nix/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
@@ -39,7 +40,7 @@
         overlays = [ nixgl.overlay ];
       };
       sharedHomeModules = [
-        # catppuccin.homeModules.catppuccin  # TEMP: opencode module has schema mismatch with home-manager 25.11
+        catppuccin.homeModules.catppuccin
         sops-nix.homeManagerModules.sops
       ];
       mkNixos = hostPath: nixpkgs.lib.nixosSystem {
@@ -63,7 +64,7 @@
         inherit pkgs;
         modules = [
           ./hosts/fedora/home.nix
-          # catppuccin.homeModules.catppuccin  # TEMP: opencode module has schema mismatch with home-manager 25.11
+          catppuccin.homeModules.catppuccin
           sops-nix.homeManagerModules.sops
         ];
       };
