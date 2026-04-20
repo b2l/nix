@@ -39,7 +39,7 @@
         overlays = [ nixgl.overlay ];
       };
       sharedHomeModules = [
-        catppuccin.homeModules.catppuccin
+        # catppuccin.homeModules.catppuccin  # TEMP: opencode module has schema mismatch with home-manager 25.11
         sops-nix.homeManagerModules.sops
       ];
       mkNixos = hostPath: nixpkgs.lib.nixosSystem {
@@ -63,7 +63,7 @@
         inherit pkgs;
         modules = [
           ./hosts/fedora/home.nix
-          catppuccin.homeModules.catppuccin
+          # catppuccin.homeModules.catppuccin  # TEMP: opencode module has schema mismatch with home-manager 25.11
           sops-nix.homeManagerModules.sops
         ];
       };
