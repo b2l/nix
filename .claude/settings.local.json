@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh search:*)",
+      "Bash(gh issue:*)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(gh release:*)",
+      "Bash(gh api:*)",
+      "WebFetch(domain:davatorium.github.io)",
+      "WebFetch(domain:gitlab.com)",
+      "Bash(passbolt configure:*)",
+      "Bash(passbolt --help)",
+      "Read(//nix/store/**)",
+      "Read(//home/nicolas/**)",
+      "Bash(tmux show-options:*)",
+      "Bash(nvim --version)",
+      "Bash(tmux -V)",
+      "Bash(nix-build -E 'let flake = builtins.getFlake \\(toString ./.\\); pkgs = flake.outputs.homeConfigurations.\"work-pc\".pkgs; in pkgs.callPackage ./common/pkgs/warpd.nix {}' --no-out-link)"
+    ]
+  }
+}

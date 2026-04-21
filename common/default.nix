@@ -114,6 +114,12 @@ in
   xdg.configFile."git/ignore".text = ''
     .envrc
     .direnv/
+    .nvimrc
+    .tern-port
+    .vim/.netrwhist
+    .config/dconf/user
+    .nx
+    .claude
   '';
 
   programs.direnv = {

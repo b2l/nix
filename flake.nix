@@ -15,7 +15,6 @@
       # Pinned to release branch matching home-manager above. Bump together.
       url = "github:catppuccin/nix/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.home-manager.follows = "home-manager";
     };
     sops-nix = {
       url = "github:Mic92/sops-nix";
@@ -38,6 +37,10 @@
       pkgs = import nixpkgs {
         inherit system;
         overlays = [ nixgl.overlay ];
+        # Matches the NixOS path (common/nixos/default.nix sets allowUnfree
+        # there). Needed here for homeConfigurations (Fedora work-pc) so
+        # Chrome, Slack, Spotify, sfw, etc. evaluate.
+        config.allowUnfree = true;
       };
       sharedHomeModules = [
         catppuccin.homeModules.catppuccin
@@ -54,6 +57,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "hm-backup";
+            home-manager.extraSpecialArgs = { inherit inputs; };
             home-manager.sharedModules = sharedHomeModules;
             home-manager.users.nicolas = import (builtins.dirOf hostPath + "/home.nix");
           }
@@ -62,6 +66,7 @@
     in {
       homeConfigurations."work-pc" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
+        extraSpecialArgs = { inherit inputs; };
         modules = [
           ./hosts/fedora/home.nix
           catppuccin.homeModules.catppuccin
