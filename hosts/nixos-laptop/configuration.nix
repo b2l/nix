@@ -18,6 +18,11 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # zram swap — in-RAM compressed swap for everyday memory pressure.
+  # The disk swap partition (disk.nix, `resumeDevice = true`) is the
+  # hibernation target and auto-wires `boot.resumeDevice` via disko.
+  zramSwap.enable = true;
+
   # Two displays — laptop internal + external dock
   # Update names to match `hyprctl monitors` output after first boot
   # wayland.windowManager.hyprland.settings.monitor in common/hyprland.nix
