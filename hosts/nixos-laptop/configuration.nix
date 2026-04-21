@@ -6,8 +6,11 @@
     ./disk.nix
     ../../common/nixos
     inputs.disko.nixosModules.disko
-    inputs.nixos-hardware.nixosModules.common-cpu-intel-raptor-lake
-    inputs.nixos-hardware.nixosModules.common-gpu-intel-raptor-lake
+    # common-cpu-intel covers Raptor Lake (and any other Intel gen) and
+    # auto-imports common-gpu-intel for the iGPU — no need to list it again.
+    # nixos-hardware only exposes generic Intel modules; the `raptor-lake/`
+    # dir just re-exports the generic one, so this is functionally equivalent.
+    inputs.nixos-hardware.nixosModules.common-cpu-intel
     inputs.nixos-hardware.nixosModules.common-pc-laptop
     inputs.nixos-hardware.nixosModules.common-pc-laptop-ssd
   ];
