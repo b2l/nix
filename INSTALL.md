@@ -5,15 +5,13 @@ End-to-end install procedure for `hosts/nixos-laptop`. Disk gets wiped — backu
 ## Prerequisites
 
 - NixOS minimal ISO on USB.
-- `~/.config/sops/age/keys.txt` from current machine, on a USB stick (or another reachable host via scp). **Without this, sops secrets are gone.**
 - Backup of:
-  - `~/Projects/` (work code, in-progress branches)
+  - `~/.config/sops/age/keys.txt` from current machine, on a USB stick (or another reachable host via scp). **Without this, sops secrets are gone.**
   - `~/Documents/`, `~/Downloads/`, etc.
-  - `~/.ssh/` (private keys)
-  - `~/.gnupg/` (if used)
+  - `/etc/NetworkManager/system-connections/*.nmconnection` (WiFi + VPN profiles
+    with passwords and 802.1x configs; root-owned, 0600). Also `/etc/NetworkManager/certs/`
+    if any of the profiles reference certificate files.
   - Browser profiles (`~/.mozilla`, `~/.config/google-chrome`)
-  - Slack/Signal config (`~/.config/Slack`, `~/.config/Signal`) — losing means re-login/re-pair
-  - Anything in `/etc` you customized that's not in the flake
 
 ## Procedure
 
@@ -105,7 +103,15 @@ Remove the USB before BIOS hands off.
    - Hyprland session loads with your config
    - `home-manager` activated (your bash prompt, neovim plugins, etc.)
 6. Restore data from backup.
-7. Generate per-machine SSH key, add to GitHub:
+7. Restore NetworkManager connection profiles (if backed up):
+   ```bash
+   sudo cp ~/backup/system-connections/*.nmconnection /etc/NetworkManager/system-connections/
+   sudo chmod 600 /etc/NetworkManager/system-connections/*.nmconnection
+   sudo chown root:root /etc/NetworkManager/system-connections/*.nmconnection
+   sudo systemctl restart NetworkManager
+   ```
+   Wrong perms → NetworkManager silently refuses to load the profiles.
+8. Generate per-machine SSH key, add to GitHub:
    ```bash
    ssh-keygen -t ed25519 -C "nicolas@nixos-laptop"
    gh ssh-key add ~/.ssh/id_ed25519.pub
