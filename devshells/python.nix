@@ -4,7 +4,7 @@ pkgs.mkShell {
   name = "python-shell";
 
   buildInputs = with pkgs; [
-    python312
+    python3
     poetry
     postgresql_16
     postgresql.lib
