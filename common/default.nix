@@ -98,6 +98,13 @@ in
 
   home.sessionVariables.TERMINAL = "foot";
 
+  # PATH for GUI sessions started by systemd (e.g. via SDDM). Bash rcs are not
+  # sourced by systemd user services, so Hyprland/Waybar/dunst would otherwise
+  # miss ~/.local/bin (user scripts) and ~/.nix-profile/bin (rofi, rbw, jq, …).
+  xdg.configFile."environment.d/20-path.conf".text = ''
+    PATH=''${HOME}/.nix-profile/bin:''${HOME}/.local/bin:''${PATH}
+  '';
+
   home.file.".local/share/wall.jpg".source = ./theme/wallpaper.jpg;
 
   # rbw (Bitwarden CLI) — uses custom pinentry that reads master password from gnome-keyring
