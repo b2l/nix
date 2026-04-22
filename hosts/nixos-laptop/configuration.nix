@@ -32,5 +32,5 @@
   # only has the wildcard fallback; add specific lines here if desired.
 
   # Pinned at first install
-  system.stateVersion = "25.05";
+  system.stateVersion = "25.11";
 }

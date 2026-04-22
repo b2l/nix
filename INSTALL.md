@@ -70,7 +70,7 @@ sudo git -C /mnt/home/nicolas/Perso/nix add hosts/nixos-laptop/hardware-configur
 USB stick mounted at `/run/media/nixos/USB`:
 ```bash
 sudo mkdir -p /mnt/home/nicolas/.config/sops/age
-sudo cp /run/media/nixos/USB/keys.txt /mnt/home/nicolas/.config/sops/age/
+sudo cp /run/media/<label>/<path>/keys.txt /mnt/home/nicolas/.config/sops/age/
 ```
 
 ### 7. Install
@@ -84,6 +84,7 @@ When prompted for the **root password**: keymap is still dvorak from step 2. Typ
 ### 8. Reboot
 
 ```bash
+sudo chown -R nicolas:users /mnt/home/nicolas
 sudo reboot
 ```
 Remove the USB before BIOS hands off.
