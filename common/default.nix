@@ -4,7 +4,7 @@ let
   sfw = pkgs.callPackage ./pkgs/sfw.nix {};
 in
 {
-  imports = [ ./bash.nix ./tmux.nix ./foot.nix ./hyprland.nix ./secrets.nix ./neovim.nix ./scripts.nix ./pomodoro.nix ./nvchecker.nix ];
+  imports = [ ./bash.nix ./tmux.nix ./foot.nix ./hyprland.nix ./secrets.nix ./neovim.nix ./scripts.nix ./pomodoro.nix ./nvchecker.nix ./mail.nix ];
 
   # Shared aliases — applied to every shell home-manager manages.
   home.shellAliases = {
