@@ -7,7 +7,7 @@
 
     secrets."lcdp_env" = {
       sopsFile = ../secrets/lcdp.yaml;
-      key = "env_fish";
+      key = "env_bash";
     };
   };
 }

@@ -15,7 +15,9 @@
       "Bash(tmux show-options:*)",
       "Bash(nvim --version)",
       "Bash(tmux -V)",
-      "Bash(nix-build -E 'let flake = builtins.getFlake \\(toString ./.\\); pkgs = flake.outputs.homeConfigurations.\"work-pc\".pkgs; in pkgs.callPackage ./common/pkgs/warpd.nix {}' --no-out-link)"
+      "Bash(nix-build -E 'let flake = builtins.getFlake \\(toString ./.\\); pkgs = flake.outputs.homeConfigurations.\"work-pc\".pkgs; in pkgs.callPackage ./common/pkgs/warpd.nix {}' --no-out-link)",
+      "Bash(/usr/lib/systemd/user-environment-generators/30-systemd-environment-d-generator)",
+      "Bash(systemctl --user status --no-pager)"
     ]
   }
 }

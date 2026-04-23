@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   programs.bash = {
@@ -177,8 +177,8 @@
           -p "Read .claude/fix-pr.md and follow its instructions for PR #$pr."
       }
 
-      # source lcdp env (bash syntax; user-managed, not sops-nix)
-      [ -f "$HOME/.config/lcdp_env.bash" ] && . "$HOME/.config/lcdp_env.bash"
+      # source lcdp env (decrypted by sops-nix at activation)
+      [ -f "${config.sops.secrets."lcdp_env".path}" ] && . "${config.sops.secrets."lcdp_env".path}"
 
       # safe-chain
       [ -f "$HOME/.safe-chain/scripts/init-bash.sh" ] && . "$HOME/.safe-chain/scripts/init-bash.sh"
