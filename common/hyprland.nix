@@ -13,6 +13,7 @@
   # Theme files (native format, extracted)
   xdg.configFile = {
     "hypr/hypridle.conf".source = ./theme/hypridle.conf;
+    "hypr/hyprlock.conf".source = ./theme/hyprlock.conf;
     "hypr/hyprpaper.conf".source = ./theme/hyprpaper.conf;
     "tofi/config".source = ./theme/tofi-config;
     "tofi/powermenu-config".source = ./theme/tofi-powermenu;

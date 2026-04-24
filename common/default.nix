@@ -59,6 +59,8 @@ in
     wlogout
     tofi
     jq
+    ripgrep
+    fd
     rbw
     go-passbolt-cli
     claude-code
@@ -84,6 +86,7 @@ in
     hyprpicker
     hyprpaper
     hypridle
+    hyprlock
     dunst
     rofi
     grim
