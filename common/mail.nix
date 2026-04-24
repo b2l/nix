@@ -19,7 +19,7 @@
       realName = "Nicolas Medda";
       address = "nicolas@ling.fr";
       userName = "nicolas@ling.fr";
-      passwordCommand = "secret-tool lookup Mailaccount ling";
+      passwordCommand = "secret-tool lookup all ling";
       imap = {
         host = "pro3.mail.ovh.net";
         port = 993;
@@ -57,7 +57,7 @@
       realName = "Nicolas Medda";
       address = "nicolas@cheneetcompagnie.fr";
       userName = "nicolas@cheneetcompagnie.fr";
-      passwordCommand = "secret-tool lookup Mailaccount cheneetcie";
+      passwordCommand = "secret-tool lookup all cheneetcie";
       imap = {
         host = "pro3.mail.ovh.net";
         port = 993;
@@ -87,7 +87,7 @@
       realName = "Nicolas Medda";
       address = "b2l.powa@gmail.com";
       userName = "b2l.powa@gmail.com";
-      passwordCommand = "secret-tool lookup Mailaccount b2l";
+      passwordCommand = "secret-tool lookup all b2l";
       smtp.tls.useStartTls = true;
       folders.inbox = "INBOX";
       mbsync = {
@@ -112,7 +112,7 @@
       realName = "Nicolas Medda";
       address = "nicolas@lecomptoirdespharmacies.fr";
       userName = "nicolas@lecomptoirdespharmacies.fr";
-      passwordCommand = "secret-tool lookup Mailaccount lcdp";
+      passwordCommand = "secret-tool lookup all lcdp";
       smtp.tls.useStartTls = true;
       folders.inbox = "INBOX";
       mbsync = {

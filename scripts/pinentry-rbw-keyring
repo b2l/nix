@@ -3,7 +3,7 @@
 # Falls back to pinentry-gnome3 if no keyring entry found.
 set -euo pipefail
 
-password=$(secret-tool lookup application rbw type master-password 2>/dev/null) || password=""
+password=$(secret-tool lookup all rbw 2>/dev/null) || password=""
 
 if [ -z "$password" ]; then
     exec pinentry-gnome3 "$@"
