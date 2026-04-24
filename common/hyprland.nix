@@ -89,12 +89,17 @@
         modules-left = [ "hyprland/workspaces" "hyprland/window" ];
         modules-center = [ "clock" "custom/pomodoro" ];
         modules-right = [
-          "custom/cpu-spark" "custom/sep" "custom/mem-spark"
-          "custom/sep" "tray" "pulseaudio" "custom/sep" "network"
-          "custom/sep" "battery" "custom/sep" "power-profiles-daemon"
-          "custom/sep" "custom/donotdisturb"
-          "custom/sep" "custom/updates"
-          "custom/sep" "hyprland/language" "custom/sep" "custom/power"
+          "custom/cpu-spark" "custom/sep" 
+          "custom/mem-spark" "custom/sep" 
+          "tray" 
+          "pulseaudio" "custom/sep" 
+          "network" "custom/sep" 
+          "battery" "custom/sep" 
+          "power-profiles-daemon" "custom/sep" 
+          "custom/donotdisturb" "custom/sep" 
+          "custom/updates" "custom/sep" 
+          "hyprland/language" "custom/sep" 
+          "custom/power"
         ];
         "custom/pomodoro" = {
           format = "{}";

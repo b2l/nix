@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 export PATH="$HOME/.nix-profile/bin:$PATH"
 
 isPaused=$(dunstctl is-paused)
