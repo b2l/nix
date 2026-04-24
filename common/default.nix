@@ -61,6 +61,8 @@ in
     jq
     rbw
     go-passbolt-cli
+    claude-code
+    jetbrains.datagrip
     # (pkgs.papirus-icon-theme.overrideAttrs { meta.priority = 10; })
 
     # GUI apps
