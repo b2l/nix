@@ -37,15 +37,7 @@
       pkgs = import nixpkgs {
         inherit system;
         overlays = [ nixgl.overlay ];
-        # Matches the NixOS path (common/nixos/default.nix sets allowUnfree
-        # there). Needed here for homeConfigurations (Fedora work-pc) so
-        # Chrome, Slack, Spotify, sfw, etc. evaluate.
-        config.allowUnfree = true;
       };
-      sharedHomeModules = [
-        catppuccin.homeModules.catppuccin
-        sops-nix.homeManagerModules.sops
-      ];
       mkNixos = hostPath: nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = { inherit inputs; };
@@ -58,24 +50,16 @@
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "hm-backup";
             home-manager.extraSpecialArgs = { inherit inputs; };
-            home-manager.sharedModules = sharedHomeModules;
+            home-manager.sharedModules = [
+              catppuccin.homeModules.catppuccin
+              sops-nix.homeManagerModules.sops
+            ];
             home-manager.users.nicolas = import (builtins.dirOf hostPath + "/home.nix");
           }
         ];
       };
     in {
-      homeConfigurations."work-pc" = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        extraSpecialArgs = { inherit inputs; };
-        modules = [
-          ./hosts/fedora/home.nix
-          catppuccin.homeModules.catppuccin
-          sops-nix.homeManagerModules.sops
-        ];
-      };
-
       nixosConfigurations = {
-        nixos-vm = mkNixos ./hosts/nixos-vm/configuration.nix;
         nixos-laptop = mkNixos ./hosts/nixos-laptop/configuration.nix;
       };
 
