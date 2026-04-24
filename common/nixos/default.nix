@@ -76,6 +76,9 @@
   # Printing
   services.printing.enable = true;
 
+  # Power profiles (performance / balanced / power-saver)
+  services.power-profiles-daemon.enable = true;
+
   # Firmware updates
   services.fwupd.enable = true;
 
@@ -87,6 +90,9 @@
 
   # Polkit — GUI auth prompts (paired with hyprpolkitagent from home-manager)
   security.polkit.enable = true;
+
+  # GNOME Keyring — provides org.freedesktop.secrets for rbw pinentry, etc.
+  services.gnome.gnome-keyring.enable = true;
 
   # nix-ld: run dynamically-linked binaries (LSPs, prebuilt Node native deps, …)
   programs.nix-ld.enable = true;

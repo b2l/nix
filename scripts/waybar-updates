@@ -13,11 +13,9 @@ set -u
 FLAKE_DIR="${FLAKE_DIR:-$HOME/Perso/nix}"
 STATE="$HOME/.cache/nvchecker/newver.json"
 
-empty='{"text":"","tooltip":"","class":"none"}'
-
-# No state yet = nvchecker hasn't run. Silent rather than noisy.
+# No state yet = nvchecker hasn't run.
 if [ ! -f "$STATE" ]; then
-  printf '%s\n' "$empty"
+  printf '{"text":"󰏔 ?","tooltip":"nvchecker has not run yet","class":"unknown"}\n'
   exit 0
 fi
 
@@ -41,7 +39,7 @@ sfw_drift=""
   && sfw_drift=1
 
 if [ -z "$channel_drift" ] && [ -z "$sfw_drift" ]; then
-  printf '%s\n' "$empty"
+  printf '{"text":"󰄬","tooltip":"Everything up to date","class":"uptodate"}\n'
   exit 0
 fi
 
