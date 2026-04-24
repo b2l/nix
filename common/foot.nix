@@ -6,8 +6,8 @@
     settings = {
       main = {
         shell = "${pkgs.bashInteractive}/bin/bash";
-        font = "Fira Code:size=12";
-        font-bold = "Fira Code:style=Bold:size=12";
+        font = "FiraCode Nerd Font:size=12";
+        font-bold = "FiraCode Nerd Font:style=Bold:size=12";
         pad = "20x20";
       };
       scrollback = {

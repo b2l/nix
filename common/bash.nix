@@ -51,6 +51,7 @@
       _prepend_path "$PNPM_HOME"
       _prepend_path "$BUN_INSTALL/bin"
       _prepend_path "$HOME/.local/bin"
+      _prepend_path "/run/wrappers/bin"
       export PATH
       unset -f _prepend_path
 
