@@ -86,7 +86,7 @@
           if [[ "$arg" == -* ]]; then
             __extra_args+=("$arg")
           elif [ -f "../customs/$arg.txt" ]; then
-            while IFS= read -r line; do
+            while IFS= read -r line || [[ -n "$line" ]]; do
               __compose_files+=(-f "overrides/$line")
             done < "../customs/$arg.txt"
           elif [ -f "overrides/$arg.yml" ]; then
@@ -115,7 +115,7 @@
           if [[ "$arg" == -* ]]; then
             extra_args+=("$arg")
           elif [ -f "../customs/$arg.txt" ]; then
-            while IFS= read -r line; do
+            while IFS= read -r line || [[ -n "$line" ]]; do
               compose_files+=(-f "overrides/$line")
             done < "../customs/$arg.txt"
           elif [ -f "overrides/$arg.yml" ]; then

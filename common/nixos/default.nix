@@ -36,6 +36,8 @@
   networking.networkmanager.enable = true;
   networking.firewall.enable = true;
 
+  networking.firewall.trustedInterfaces = [ "docker0" "br-+" ];
+
   # Hyprland + SDDM (Wayland)
   programs.hyprland.enable = true;
   services.displayManager.sddm = {
