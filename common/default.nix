@@ -9,7 +9,7 @@ in
   # Shared aliases — applied to every shell home-manager manages.
   home.shellAliases = {
     # nix
-    nhs = "nh home switch -c work-pc";
+    nhs = "nh os switch";
 
     # safe commands
     cp = "cp -iv";
@@ -128,6 +128,8 @@ in
     .nx
     .claude
   '';
+
+  services.ssh-agent.enable = true;
 
   programs.direnv = {
     enable = true;
