@@ -5,6 +5,7 @@ pkgs.mkShell {
 
   buildInputs = with pkgs; [
     jdk21
+    jdt-language-server
     sbt
     maven
   ];
