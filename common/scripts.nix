@@ -23,6 +23,8 @@ let
     "waybar-updates"
     "tmux-new-session"
     "tmux-switch-session"
+    "dictate.sh"
+    "dictate-status.sh"
   ];
 in {
   home.file = builtins.listToAttrs (map (name: {

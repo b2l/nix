@@ -89,6 +89,7 @@ in
 
     # Wayland / Hyprland utilities
     wl-clipboard
+    wtype
     cliphist
     grimblast
     hyprpicker
