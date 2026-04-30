@@ -62,7 +62,8 @@ stop_recording() {
         return 1
     fi
 
-    wtype -- "$text"
+    wl-copy "$text"
+    wtype -M ctrl v -m ctrl
     dunstify -a "Dictate" -r 9994 -i microphone-sensitivity-high-symbolic "Dictation" "Done" -t 2000
     rm -f "$WAVFILE"
 }
