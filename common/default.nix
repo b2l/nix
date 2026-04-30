@@ -43,6 +43,14 @@ in
     enable = true;
     flavor = "mocha";
     rofi.enable = false;
+    cursors.enable = false;
+  };
+
+  home.pointerCursor = {
+    name = "Adwaita";
+    package = pkgs.adwaita-icon-theme;
+    size = 24;
+    gtk.enable = true;
   };
 
   home.packages = with pkgs; [
@@ -94,11 +102,13 @@ in
     satty
     wlr-randr
     wlsunset
+    sox
 
     # CLI tools
     httpie
     ansible
     pandoc
+    warpd
   ];
 
   home.sessionVariables.TERMINAL = "foot";
@@ -135,6 +145,24 @@ in
   '';
 
   services.ssh-agent.enable = true;
+
+  programs.ssh = {
+    enable = true;
+    addKeysToAgent = "yes";
+    matchBlocks = {
+      "e2e-jump" = {
+        hostname = "54.237.177.143";
+        user = "ec2-user";
+        identityFile = "~/.ssh/ec2-jump-host";
+      };
+      "e2e-runner" = {
+        hostname = "172.16.10.224";
+        user = "ec2-user";
+        identityFile = "~/.ssh/ec2-runner";
+        proxyJump = "e2e-jump";
+      };
+    };
+  };
 
   programs.direnv = {
     enable = true;

@@ -100,29 +100,17 @@
   programs.nix-ld.enable = true;
 
   # AppImage support — `./foo.AppImage` runs directly, plus `appimage-run`.
-  # Needed for Mouseless and any other AppImage-distributed tool.
   programs.appimage = {
     enable = true;
     binfmt = true;
   };
 
-  # Low-level input access for Mouseless (keyboard-driven cursor with grid
-  # overlay and macros). Mouseless requires both:
-  #   - /dev/uinput        to inject mouse/keyboard events
-  #   - /dev/input/event*  to observe global keystrokes (its activation key
-  #                        and grid navigation bypass the compositor)
-  #
-  # Security cost: matches X11's input model. Any program running as your
-  # user can keylog every keystroke AND synthesize arbitrary input. This is
-  # the trade-off Mouseless's own docs explicitly call out.
-  #
-  # If you later replace Mouseless with a compositor-integrated tool that
-  # doesn't need global key reads, drop the event* rule to close the
-  # keylogging hole.
+  # uinput access for warpd (keyboard-driven virtual pointer).
+  # warpd uses Wayland protocol for key input but needs /dev/uinput to
+  # inject mouse events.
   boot.kernelModules = [ "uinput" ];
   services.udev.extraRules = ''
     KERNEL=="uinput", GROUP="input", MODE:="0660", OPTIONS+="static_node=uinput"
-    KERNEL=="event*", GROUP="input", MODE:="0660"
   '';
 
   # Fonts
@@ -173,6 +161,7 @@
       "--update-input" "catppuccin"
       "--update-input" "sops-nix"
       "--update-input" "nixgl"
+      "--update-input" "nixpkgs-unstable"
       "--update-input" "nixos-hardware"
       "-L"
     ];

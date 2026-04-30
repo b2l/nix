@@ -24,6 +24,7 @@
       url = "github:nix-community/nixGL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     disko = {
       url = "github:nix-community/disko";
@@ -38,9 +39,13 @@
         inherit system;
         overlays = [ nixgl.overlay ];
       };
+      pkgs-unstable = import inputs.nixpkgs-unstable {
+        inherit system;
+        config.allowUnfree = true;
+      };
       mkNixos = hostPath: nixpkgs.lib.nixosSystem {
         inherit system;
-        specialArgs = { inherit inputs; };
+        specialArgs = { inherit inputs pkgs-unstable; };
         modules = [
           hostPath
           sops-nix.nixosModules.sops
@@ -49,7 +54,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "hm-backup";
-            home-manager.extraSpecialArgs = { inherit inputs; };
+            home-manager.extraSpecialArgs = { inherit inputs pkgs-unstable; };
             home-manager.sharedModules = [
               catppuccin.homeModules.catppuccin
               sops-nix.homeManagerModules.sops
