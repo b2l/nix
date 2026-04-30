@@ -19,7 +19,7 @@ stop_recording() {
     rm -f "$PIDFILE"
     pkill -SIGRTMIN+2 waybar
 
-    if [ -z "$pid" ] || ! kill "$pid" 2>/dev/null; then
+    if [ -z "$pid" ] || ! kill -INT "$pid" 2>/dev/null; then
         dunstify -a "Dictate" -r 9994 -i dialog-error-symbolic "Dictation" "Error: no active recording" -t 3000
         return 1
     fi
@@ -28,6 +28,7 @@ stop_recording() {
 
     if [ ! -s "$WAVFILE" ]; then
         dunstify -a "Dictate" -r 9994 -i dialog-error-symbolic "Dictation" "Error: empty audio file" -t 3000
+        rm -f "$WAVFILE"
         return 1
     fi
 
@@ -35,21 +36,21 @@ stop_recording() {
     api_key=$(secret-tool lookup all groq 2>/dev/null)
     if [ -z "$api_key" ]; then
         dunstify -a "Dictate" -r 9994 -i dialog-error-symbolic "Dictation" "Error: no API key found" -t 3000
+        rm -f "$WAVFILE"
         return 1
     fi
 
     dunstify -a "Dictate" -r 9994 -i content-loading-symbolic "Dictation" "Transcribing..." -t 0
 
     local response
-    response=$(curl -sf --max-time 10 "$GROQ_URL" \
+    if ! response=$(curl -sf --connect-timeout 5 --max-time 30 "$GROQ_URL" \
         -H "Authorization: Bearer $api_key" \
         -F file=@"$WAVFILE" \
         -F model=whisper-large-v3-turbo \
         -F language=fr \
-        -F prompt="$VOCAB" 2>/dev/null)
-
-    if [ $? -ne 0 ] || [ -z "$response" ]; then
+        -F prompt="$VOCAB" 2>/dev/null); then
         dunstify -a "Dictate" -r 9994 -i dialog-error-symbolic "Dictation" "Error: API request failed" -t 3000
+        rm -f "$WAVFILE"
         return 1
     fi
 
@@ -57,6 +58,7 @@ stop_recording() {
     text=$(echo "$response" | jq -r '.text // empty')
     if [ -z "$text" ]; then
         dunstify -a "Dictate" -r 9994 -i dialog-error-symbolic "Dictation" "Error: empty transcription" -t 3000
+        rm -f "$WAVFILE"
         return 1
     fi
 
