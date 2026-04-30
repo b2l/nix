@@ -54,7 +54,14 @@ stop_recording() {
         return 1
     fi
 
-    wtype -d 50 -- "$text"
+    wl-copy "$text"
+    local wclass
+    wclass=$(hyprctl activewindow -j | jq -r '.class' 2>/dev/null)
+    if [ "$wclass" = "foot" ]; then
+        wtype -M ctrl -M shift v -m shift -m ctrl
+    else
+        wtype -M ctrl v -m ctrl
+    fi
     dunstify -a "Dictate" -r 9994 -i microphone-sensitivity-high-symbolic "Dictation" "Done" -t 2000
 }
 
