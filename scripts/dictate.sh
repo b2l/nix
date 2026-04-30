@@ -4,7 +4,7 @@ export PATH="$HOME/.nix-profile/bin:$PATH"
 PIDFILE="/tmp/dictate.pid"
 WAVFILE="/tmp/dictate.wav"
 GROQ_URL="https://api.groq.com/openai/v1/audio/transcriptions"
-VOCAB="NixOS, Xwayland, Wayland, Hyprland, Docker, Docker Compose, React, ReactJS, TypeScript, JavaScript, Terraform, AWS, ebean, Java, Python, Cython, Poetry, uv, venv, pip, TanStack Query, Redux, Redux-Saga, Grommet, Ant Design, antd, shadcn/ui, Tailwind, CSS, Less, Claude, Claude Code, useEffect, useState, npm, pnpm, git, GitHub"
+VOCAB="NixOS, nixpkgs, Xwayland, Wayland, Hyprland, hyprctl, waybar, dunst, dunstify, wtype, tmux, foot, Neovim, nvim, Catppuccin, ebean, Liquibase, FastAPI, Uvicorn, Connexion, Spring Boot, OpenFeign, Lombok, MapStruct, JUnit, Mockito, WireMock, Pitest, MangoPay, Chargebee, Algolia, TanStack Query, Redux, Redux-Saga, Grommet, Ant Design, antd, shadcn/ui, Tailwind, PostCSS, Webpack, Vite, NX, Storybook, Chromatic, Cypress, Jest, pnpm, Claude, Claude Code, Groq, Whisper, Terraform, OpenTofu, Fargate, CloudFront, ElastiCache, Kafka, Avro, Karapace, Kpow, Aiven, Consul, Datadog, Sentry, PostgreSQL, Metabase, Elasticsearch, Docker Compose, Airflow, Bitbucket, GitHub Actions, SonarQube, Aikido, Poetry, uv, venv, Alembic, SQLAlchemy, asyncpg, jujutsu, lazygit, direnv, ripgrep, Ansible, Hookdeck, Deadbolt, Guice, sbt, Play Framework, Scala, Kotlin, Deno, Rust, cargo, useEffect, useState, rsync, nginx, SDDM, systemd, PipeWire, rbw, Passbolt, Dvorak"
 
 start_recording() {
     rec -q "$WAVFILE" rate 16k channels 1 &
