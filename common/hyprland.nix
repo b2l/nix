@@ -97,8 +97,9 @@
           "network" "custom/sep" 
           "battery" "custom/sep" 
           "power-profiles-daemon" "custom/sep" 
-          "custom/donotdisturb" "custom/sep" 
-          "custom/updates" "custom/sep" 
+          "custom/dictate" "custom/sep"
+          "custom/donotdisturb" "custom/sep"
+          "custom/updates" "custom/sep"
           "hyprland/language" "custom/sep" 
           "custom/power"
         ];
@@ -122,6 +123,13 @@
         };
         "custom/sep" = { format = " "; tooltip = false; };
         "custom/donotdisturb" = { exec = "donotdisturb.sh"; format = "{}"; interval = 1; return-type = "json"; signal = 1; on-click = "dunstctl set-paused toggle"; };
+        "custom/dictate" = {
+          exec = "dictate-status.sh";
+          return-type = "json";
+          interval = 1;
+          signal = 2;
+          format = "{}";
+        };
         "custom/updates" = {
           exec = "waybar-updates";
           format = "{}";

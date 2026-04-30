@@ -127,6 +127,7 @@ window#waybar.mainbar .modules-center {
 #power-profiles-daemon,
 #custom-cpu-spark,
 #custom-mem-spark,
+#custom-dictate,
 #custom-donotdisturb,
 #custom-power,
 #tray,
@@ -236,6 +237,24 @@ window#waybar.mainbar .modules-center {
 #custom-power {
     color: @red;
     font-size: 14px;
+}
+
+/* ── Dictation ── */
+#custom-dictate {
+    padding: 0 6px;
+    color: @text;
+    margin: 3px 0;
+    font-size: 13px;
+}
+
+#custom-dictate.recording {
+    color: @red;
+}
+
+#custom-dictate.idle {
+    padding: 0;
+    margin: 0;
+    min-width: 0;
 }
 
 /* ── Separator ── */
