@@ -28,7 +28,6 @@ stop_recording() {
 
     if [ ! -s "$WAVFILE" ]; then
         dunstify -a "Dictate" -r 9994 -i dialog-error-symbolic "Dictation" "Error: empty audio file" -t 3000
-        rm -f "$WAVFILE"
         return 1
     fi
 
@@ -36,7 +35,6 @@ stop_recording() {
     api_key=$(secret-tool lookup all groq 2>/dev/null)
     if [ -z "$api_key" ]; then
         dunstify -a "Dictate" -r 9994 -i dialog-error-symbolic "Dictation" "Error: no API key found" -t 3000
-        rm -f "$WAVFILE"
         return 1
     fi
 
@@ -50,7 +48,6 @@ stop_recording() {
         -F language=fr \
         -F prompt="$VOCAB" 2>/dev/null); then
         dunstify -a "Dictate" -r 9994 -i dialog-error-symbolic "Dictation" "Error: API request failed" -t 3000
-        rm -f "$WAVFILE"
         return 1
     fi
 
@@ -58,14 +55,12 @@ stop_recording() {
     text=$(echo "$response" | jq -r '.text // empty')
     if [ -z "$text" ]; then
         dunstify -a "Dictate" -r 9994 -i dialog-error-symbolic "Dictation" "Error: empty transcription" -t 3000
-        rm -f "$WAVFILE"
         return 1
     fi
 
     wl-copy "$text"
     wtype -M ctrl v -m ctrl
     dunstify -a "Dictate" -r 9994 -i microphone-sensitivity-high-symbolic "Dictation" "Done" -t 2000
-    rm -f "$WAVFILE"
 }
 
 if [ -f "$PIDFILE" ] && kill -0 "$(cat "$PIDFILE" 2>/dev/null)" 2>/dev/null; then
