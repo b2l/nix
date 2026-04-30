@@ -4,7 +4,6 @@ export PATH="$HOME/.nix-profile/bin:$PATH"
 PIDFILE="/tmp/dictate.pid"
 WAVFILE="/tmp/dictate.wav"
 GROQ_URL="https://api.groq.com/openai/v1/audio/transcriptions"
-VOCAB="NixOS, nixpkgs, Xwayland, Wayland, Hyprland, hyprctl, waybar, dunstify, wtype, Neovim, Catppuccin, ebean, Liquibase, FastAPI, Uvicorn, OpenFeign, Lombok, MapStruct, WireMock, Pitest, MangoPay, Chargebee, Algolia, TanStack Query, Redux-Saga, Grommet, antd, shadcn/ui, Tailwind, PostCSS, Webpack, Storybook, Chromatic, pnpm, Claude Code, Groq, Whisper, OpenTofu, Fargate, CloudFront, ElastiCache, Karapace, Kpow, Aiven, Consul, Datadog, Sentry, Metabase, Airflow, SonarQube, Aikido, Alembic, SQLAlchemy, asyncpg, jujutsu, lazygit, direnv, ripgrep, Hookdeck, Deadbolt, Guice, sbt, PipeWire, Passbolt, Dvorak"
 
 start_recording() {
     rec -q "$WAVFILE" rate 16k channels 1 &
@@ -44,9 +43,7 @@ stop_recording() {
     if ! response=$(curl -sf --connect-timeout 5 --max-time 30 "$GROQ_URL" \
         -H "Authorization: Bearer $api_key" \
         -F file=@"$WAVFILE" \
-        -F model=whisper-large-v3-turbo \
-        -F language=fr \
-        -F prompt="$VOCAB" 2>/dev/null); then
+        -F model=whisper-large-v3-turbo 2>/dev/null); then
         dunstify -a "Dictate" -r 9994 -i dialog-error-symbolic "Dictation" "Error: API request failed" -t 3000
         return 1
     fi
