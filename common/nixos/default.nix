@@ -153,22 +153,26 @@
   system.autoUpgrade = {
     enable = true;
     flake = "/home/nicolas/Perso/nix";
-    # Explicit input list (not --recreate-lock-file) so adding a new flake
-    # input forces a deliberate edit here — drift stays visible.
-    flags = [
-      "--update-input" "nixpkgs"
-      "--update-input" "home-manager"
-      "--update-input" "catppuccin"
-      "--update-input" "sops-nix"
-      "--update-input" "nixgl"
-      "--update-input" "nixpkgs-unstable"
-      "--update-input" "nixos-hardware"
-      "-L"
-    ];
+    flags = [ "-L" ];
     dates = "04:00";
     persistent = true;              # run on wake if the slot was missed
     randomizedDelaySec = "45min";
     allowReboot = false;            # never auto-reboot; new kernel lands on next boot
     operation = "switch";
   };
+
+  # The upgrade service runs as root but the flake lives in ~nicolas.
+  # 1) git safe.directory so root can read the repo
+  # 2) Pre-start: update flake inputs before building (replaces deprecated --update-input)
+  systemd.services.nixos-upgrade = {
+    environment.GIT_DISCOVERY_ACROSS_FILESYSTEM = "1";
+    serviceConfig.ExecStartPre = let
+      flakePath = "/home/nicolas/Perso/nix";
+      inputs = [ "nixpkgs" "home-manager" "catppuccin" "sops-nix" "nixgl" "nixpkgs-unstable" "nixos-hardware" ];
+    in "+nix flake update ${builtins.concatStringsSep " " inputs} --flake ${flakePath}";
+  };
+  environment.etc."gitconfig".text = ''
+    [safe]
+      directory = /home/nicolas/Perso/nix
+  '';
 }
