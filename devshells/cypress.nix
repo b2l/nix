@@ -5,6 +5,6 @@ pkgs.mkShell {
 
   nativeBuildInputs = with pkgs; [
     nodejs
-    cypress
+    steam-run
   ];
 }
