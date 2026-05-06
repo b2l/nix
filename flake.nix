@@ -25,6 +25,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-terraform129.url = "github:nixos/nixpkgs/17f716dbf88d1c224e3a62d762de4aaea375218e";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     disko = {
       url = "github:nix-community/disko";
@@ -43,6 +44,7 @@
         inherit system;
         config.allowUnfree = true;
       };
+      pkgs-tf129 = import inputs.nixpkgs-terraform129 { inherit system; };
       mkNixos = hostPath: nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = { inherit inputs pkgs-unstable; };
@@ -79,6 +81,8 @@
         uv = import ./devshells/uv.nix { inherit pkgs; };
         scala = import ./devshells/scala.nix { inherit pkgs; };
         terraform = import ./devshells/terraform.nix { inherit pkgs; };
+        uv-terraform = import ./devshells/uv-terraform.nix { inherit pkgs pkgs-tf129; };
+        cypress = import ./devshells/cypress.nix { inherit pkgs; };
       };
     };
 }

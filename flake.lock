@@ -133,6 +133,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-terraform129": {
+      "locked": {
+        "lastModified": 1663325082,
+        "narHash": "sha256-xQCZPzYbOmkafB7zoiZ14kqE4OYVh1ZUVTqZIoLCn78=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "17f716dbf88d1c224e3a62d762de4aaea375218e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "17f716dbf88d1c224e3a62d762de4aaea375218e",
+        "type": "github"
+      }
+    },
     "nixpkgs-unstable": {
       "locked": {
         "lastModified": 1776877367,
@@ -157,6 +173,7 @@
         "nixgl": "nixgl",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",
+        "nixpkgs-terraform129": "nixpkgs-terraform129",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "sops-nix": "sops-nix"
       }
