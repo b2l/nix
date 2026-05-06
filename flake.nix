@@ -39,6 +39,11 @@
       pkgs = import nixpkgs {
         inherit system;
         overlays = [ nixgl.overlay ];
+        config.allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) [
+          "steam-unwrapped"
+          "steam-run"
+          "steam-original"
+        ];
       };
       pkgs-unstable = import inputs.nixpkgs-unstable {
         inherit system;
