@@ -86,7 +86,7 @@
         uv = import ./devshells/uv.nix { inherit pkgs; };
         scala = import ./devshells/scala.nix { inherit pkgs; };
         terraform = import ./devshells/terraform.nix { inherit pkgs; };
-        uv-terraform = import ./devshells/uv-terraform.nix { inherit pkgs pkgs-tf129; };
+        terraform129 = import ./devshells/terraform129.nix { inherit pkgs pkgs-tf129; };
         electron = import ./devshells/electron.nix { inherit pkgs; };
       };
     };

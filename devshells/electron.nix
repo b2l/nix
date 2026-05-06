@@ -1,12 +1,11 @@
 { pkgs }:
 
-pkgs.mkShell {
-  name = "electron-shell";
-
-  NIX_LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath (with pkgs; [
+let
+  electronLibs = pkgs.lib.makeLibraryPath (with pkgs; [
     alsa-lib
     at-spi2-atk
     atk
+    cairo
     cups
     dbus
     expat
@@ -17,10 +16,12 @@ pkgs.mkShell {
     gtk3
     libdrm
     libGL
+    libxkbcommon
     mesa
     nss
     nspr
     pango
+    stdenv.cc.cc.lib
     xorg.libX11
     xorg.libXcomposite
     xorg.libXcursor
@@ -30,7 +31,15 @@ pkgs.mkShell {
     xorg.libXi
     xorg.libXrandr
     xorg.libXrender
+    xorg.libXScrnSaver
     xorg.libXtst
     xorg.libxcb
   ]);
+in
+pkgs.mkShell {
+  name = "electron-shell";
+
+  shellHook = ''
+    export NIX_LD_LIBRARY_PATH="${electronLibs}''${NIX_LD_LIBRARY_PATH:+:$NIX_LD_LIBRARY_PATH}"
+  '';
 }
