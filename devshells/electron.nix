@@ -14,10 +14,12 @@ let
     gdk-pixbuf
     glib
     gtk3
+    libgbm
     libdrm
     libGL
     libxkbcommon
     mesa
+    systemd
     nss
     nspr
     pango
