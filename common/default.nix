@@ -110,6 +110,7 @@ in
     ansible
     pandoc
     warpd
+    jira-cli-go
   ];
 
   home.sessionVariables.TERMINAL = "foot";
