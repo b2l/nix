@@ -163,6 +163,11 @@ in
         identityFile = "~/.ssh/ec2-runner";
         proxyJump = "e2e-jump";
       };
+      "cloud.ling.fr" = {
+        hostname = "cloud.ling.fr";
+        user = "nicolas";
+        identityFile = "~/.ssh/id_rsa";
+      }
     };
   };
 
