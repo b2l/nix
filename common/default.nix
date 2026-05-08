@@ -167,7 +167,7 @@ in
         hostname = "cloud.ling.fr";
         user = "nicolas";
         identityFile = "~/.ssh/id_rsa";
-      }
+      };
     };
   };
 
