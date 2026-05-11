@@ -79,10 +79,10 @@
         node24 = import ./devshells/node24.nix { inherit pkgs; };
         python = import ./devshells/python.nix { inherit pkgs; };
         uv = import ./devshells/uv.nix { inherit pkgs; };
-        scala = import ./devshells/scala.nix { inherit pkgs; };
         terraform = import ./devshells/terraform.nix { inherit pkgs; };
         terraform129 = import ./devshells/terraform129.nix { inherit pkgs pkgs-tf129; };
         electron = import ./devshells/electron.nix { inherit pkgs; };
+        playframework = import ./devshells/playframework.nix { inherit pkgs; };
       };
     };
 }
