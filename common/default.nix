@@ -58,6 +58,7 @@ in
     lsd
     nodejs_22
     pnpm
+    bun
     sfw
     btop
     mpv
