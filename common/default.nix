@@ -74,6 +74,7 @@ in
     go-passbolt-cli
     claude-code
     jetbrains.datagrip
+    vial
     # (pkgs.papirus-icon-theme.overrideAttrs { meta.priority = 10; })
 
     # GUI apps
