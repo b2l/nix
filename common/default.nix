@@ -124,6 +124,13 @@ in
     PATH=''${HOME}/.nix-profile/bin:''${HOME}/.local/bin:''${PATH}
   '';
 
+  # Point SSH clients at the gcr-ssh-agent socket.  environment.d is processed
+  # by systemd *after* XDG_RUNTIME_DIR is set, unlike hm-session-vars.sh where
+  # the variable may still be empty.
+  xdg.configFile."environment.d/30-ssh-auth-sock.conf".text = ''
+    SSH_AUTH_SOCK=''${XDG_RUNTIME_DIR}/gcr/ssh
+  '';
+
   home.file.".local/share/wall.jpg".source = ./theme/wallpaper.jpg;
 
   # rbw (Bitwarden CLI) — uses custom pinentry that reads master password from gnome-keyring
