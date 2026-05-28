@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   # Flakes + new CLI
@@ -168,9 +168,10 @@
   systemd.services.nixos-upgrade = {
     environment.GIT_DISCOVERY_ACROSS_FILESYSTEM = "1";
     serviceConfig.ExecStartPre = let
+      nix = config.nix.package;
       flakePath = "/home/nicolas/Perso/nix";
       inputs = [ "nixpkgs" "home-manager" "catppuccin" "sops-nix" "nixgl" "nixpkgs-unstable" "nixos-hardware" ];
-    in "+nix flake update ${builtins.concatStringsSep " " inputs} --flake ${flakePath}";
+    in "+${nix}/bin/nix flake update ${builtins.concatStringsSep " " inputs} --flake ${flakePath}";
   };
   environment.etc."gitconfig".text = ''
     [safe]

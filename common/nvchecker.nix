@@ -14,7 +14,11 @@
   xdg.configFile."nvchecker/config.toml".source = ./nvchecker.toml;
 
   systemd.user.services.nvchecker = {
-    Unit.Description = "Check upstream versions for pinned packages";
+    Unit = {
+      Description = "Check upstream versions for pinned packages";
+      After = [ "network-online.target" ];
+      Wants = [ "network-online.target" ];
+    };
     Service = {
       Type = "oneshot";
       ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p %h/.cache/nvchecker";
@@ -22,7 +26,7 @@
       # The `cmd` source calls check-nixos-channel (in ~/.local/bin), which
       # needs gh + jq + coreutils. Systemd user services don't inherit the
       # login PATH, so build a minimal one explicitly.
-      Environment = "PATH=%h/.local/bin:${pkgs.gh}/bin:${pkgs.jq}/bin:${pkgs.coreutils}/bin";
+      Environment = "PATH=%h/.local/bin:${pkgs.bash}/bin:${pkgs.gh}/bin:${pkgs.jq}/bin:${pkgs.coreutils}/bin";
     };
   };
 
