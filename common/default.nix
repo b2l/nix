@@ -99,6 +99,7 @@ in
     hypridle
     hyprlock
     dunst
+    libnotify
     rofi
     grim
     slurp
@@ -113,6 +114,7 @@ in
     pandoc
     warpd
     jira-cli-go
+    awscli2
   ];
 
   home.sessionVariables.TERMINAL = "foot";
