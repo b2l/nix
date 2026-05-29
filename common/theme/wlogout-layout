@@ -1,6 +1,6 @@
 {
     "label" : "lock",
-    "action" : "playerctl pause; hyprlock",
+    "action" : "hyprlock",
     "text" : "Lock"
 }
 {
