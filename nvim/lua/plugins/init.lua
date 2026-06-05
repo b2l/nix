@@ -281,54 +281,6 @@ return {
     end,
   },
 
-  -- ============================================================================
-  -- AI/Claude (<leader>a)
-  -- ============================================================================
-  {
-    "coder/claudecode.nvim",
-    dependencies = { "folke/snacks.nvim" },
-    opts = {
-      diff_opts = {
-        open_in_current_tab = false, -- Open diffs in new tab when no editor window found
-      },
-    },
-    keys = {
-      { "<leader>aa", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept diff" },
-      { "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Deny diff" },
-      { "<leader>ab", "<cmd>ClaudeCodeAdd %<cr>", desc = "Add buffer to context" },
-      { "<leader>ac", "<cmd>ClaudeCode<cr>", desc = "Toggle Claude Code" },
-      { "<leader>af", "<cmd>ClaudeCodeFocus<cr>", desc = "Focus Claude Code" },
-      { "<leader>as", "<cmd>ClaudeCodeSend<cr>", mode = "v", desc = "Send selection" },
-    },
-  },
-
-  -- ============================================================================
-  -- GitHub Copilot
-  -- ============================================================================
-  {
-    "zbirenbaum/copilot.lua",
-    cmd = "Copilot",
-    event = "InsertEnter",
-    config = function()
-      require("copilot").setup {
-        suggestion = { enabled = false },
-        panel = { enabled = false },
-        filetypes = {
-          ["*"] = true,
-        },
-      }
-    end,
-  },
-
-  {
-    "zbirenbaum/copilot-cmp",
-    dependencies = "copilot.lua",
-    event = "InsertEnter",
-    config = function()
-      require("copilot_cmp").setup()
-    end,
-  },
-
   {
     "hrsh7th/nvim-cmp",
     opts = function(_, opts)
@@ -351,4 +303,11 @@ return {
       return opts
     end,
   },
+  
+  {
+    "OXY2DEV/markview.nvim",
+    lazy = false,
+    -- Completion for `blink.cmp`
+    -- dependencies = { "saghen/blink.cmp" },
+  }
 }

@@ -86,6 +86,7 @@ in
     spotify
     gimp
     libreoffice
+    naps2
     pavucontrol
     virt-manager
 

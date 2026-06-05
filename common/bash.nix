@@ -58,6 +58,15 @@
       # flake path for nh — NH_FLAKE covers both `nh os` and `nh home`.
       export NH_FLAKE="$HOME/Perso/nix"
 
+      # gcr-ssh-agent socket fallback: environment.d is only sourced by
+      # systemd --user, so interactive shells (and any tmux server started
+      # before SSH_AUTH_SOCK was exported) would otherwise fall back to the
+      # on-disk key and re-prompt for the passphrase on every git operation.
+      if [ -z "''${SSH_AUTH_SOCK:-}" ] && [ -n "''${XDG_RUNTIME_DIR:-}" ] \
+         && [ -S "''${XDG_RUNTIME_DIR}/gcr/ssh" ]; then
+        export SSH_AUTH_SOCK="''${XDG_RUNTIME_DIR}/gcr/ssh"
+      fi
+
       # lcdp work aliases
       alias dc="cd $PROJ_DIR/lcdp-docker-compose"
       alias front="cd $PROJ_DIR/lcdp-front-mono"

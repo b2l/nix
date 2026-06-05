@@ -78,6 +78,7 @@
         node22 = import ./devshells/node22.nix { inherit pkgs; };
         node24 = import ./devshells/node24.nix { inherit pkgs; };
         python = import ./devshells/python.nix { inherit pkgs; };
+        poetry = import ./devshells/poetry.nix { inherit pkgs; };
         uv = import ./devshells/uv.nix { inherit pkgs; };
         terraform = import ./devshells/terraform.nix { inherit pkgs; };
         terraform129 = import ./devshells/terraform129.nix { inherit pkgs pkgs-tf129; };

@@ -25,7 +25,7 @@
   users.users.nicolas = {
     isNormalUser = true;
     description = "Nicolas";
-    extraGroups = [ "wheel" "networkmanager" "docker" "libvirtd" "video" "audio" "input" ];
+    extraGroups = [ "wheel" "networkmanager" "docker" "libvirtd" "video" "audio" "input" "scanner" "lp" ];
     shell = pkgs.bashInteractive;
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEi9c3chna9YVlX6kMWy0ilgUsfL9X8H0iZ2/Clo2mkq"
@@ -77,6 +77,10 @@
 
   # Printing
   services.printing.enable = true;
+  services.printing.drivers = [ pkgs.gutenprint ];
+
+  # Scanning
+  hardware.sane.enable = true;
 
   # Power profiles (performance / balanced / power-saver)
   services.power-profiles-daemon.enable = true;
@@ -94,7 +98,10 @@
   security.polkit.enable = true;
 
   # GNOME Keyring — provides org.freedesktop.secrets for rbw pinentry, etc.
+  # PAM hook unlocks the keyring with the session password at SDDM login so
+  # gcr-ssh-agent can persist the SSH key passphrase across reboots.
   services.gnome.gnome-keyring.enable = true;
+  security.pam.services.sddm.enableGnomeKeyring = true;
 
   # nix-ld: run dynamically-linked binaries (LSPs, prebuilt Node native deps, …)
   programs.nix-ld.enable = true;
