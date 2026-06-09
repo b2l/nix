@@ -57,8 +57,7 @@ in
   home.packages = with pkgs; [
     nh
     lsd
-    nodejs_22
-    pnpm
+    nodejs_24
     bun
     sfw
     mindwtr
