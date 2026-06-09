@@ -1,12 +1,12 @@
-{ pkgs }:
+{ pkgs, pkgs-unstable }:
 
 pkgs.mkShell {
   name = "node24-shell";
 
-  buildInputs = with pkgs; [
-    nodejs_24
-    pnpm
-    vtsls
+  buildInputs = [
+    pkgs.nodejs_24
+    pkgs-unstable.pnpm_11
+    pkgs.vtsls
   ];
 
   shellHook = ''

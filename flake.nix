@@ -76,7 +76,7 @@
         java-legacy = import ./devshells/java-legacy.nix { inherit pkgs; };
         node20 = import ./devshells/node20.nix { inherit pkgs; };
         node22 = import ./devshells/node22.nix { inherit pkgs; };
-        node24 = import ./devshells/node24.nix { inherit pkgs; };
+        node24 = import ./devshells/node24.nix { inherit pkgs pkgs-unstable; };
         python = import ./devshells/python.nix { inherit pkgs; };
         poetry = import ./devshells/poetry.nix { inherit pkgs; };
         uv = import ./devshells/uv.nix { inherit pkgs; };
