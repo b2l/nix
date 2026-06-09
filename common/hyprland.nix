@@ -90,17 +90,14 @@
         modules-left = [ "hyprland/workspaces" "hyprland/window" ];
         modules-center = [ "clock" "custom/pomodoro" ];
         modules-right = [
-          "custom/cpu-spark" "custom/sep" 
-          "custom/mem-spark" "custom/sep" 
-          "tray" 
-          "pulseaudio" "custom/sep" 
-          "network" "custom/sep" 
-          "battery" "custom/sep" 
-          "power-profiles-daemon" "custom/sep" 
+          "tray"
+          "pulseaudio" "custom/sep"
+          "network" "custom/sep"
+          "battery" "custom/sep"
+          "power-profiles-daemon" "custom/sep"
           "custom/dictate" "custom/sep"
           "custom/donotdisturb" "custom/sep"
-          "custom/updates" "custom/sep"
-          "hyprland/language" "custom/sep" 
+          "hyprland/language" "custom/sep"
           "custom/power"
         ];
         "custom/pomodoro" = {
@@ -108,18 +105,6 @@
           return-type = "json";
           exec = "pomodoro.sh";
           interval = 1;
-        };
-        "custom/cpu-spark" = {
-          format = "{}";
-          return-type = "json";
-          exec = "sparkline-cpu.sh";
-          interval = 2;
-        };
-        "custom/mem-spark" = {
-          format = "{}";
-          return-type = "json";
-          exec = "sparkline-mem.sh";
-          interval = 5;
         };
         "custom/sep" = { format = " "; tooltip = false; };
         "custom/donotdisturb" = { exec = "donotdisturb.sh"; format = "{}"; interval = 1; return-type = "json"; signal = 1; on-click = "dunstctl set-paused toggle"; };
@@ -129,16 +114,6 @@
           interval = 1;
           signal = 2;
           format = "{}";
-        };
-        "custom/updates" = {
-          exec = "waybar-updates";
-          format = "{}";
-          return-type = "json";
-          interval = 3600;
-          # nvchecker refreshes state daily; hourly widget poll keeps the
-          # displayed text in sync soon after a bump lands on disk.
-          on-click = "xdg-open https://nixos.org/manual/nixos/stable/release-notes";
-          tooltip = true;
         };
         "hyprland/window".separate-outputs = true;
         "hyprland/workspaces" = { disable-scroll = true; all-outputs = true; on-click = "activate"; };
@@ -184,7 +159,14 @@
         position = "bottom";
         height = 34;
         margin-bottom = 8;
-        modules-center = [ "mpris" ];
+        margin-left = 10;
+        margin-right = 10;
+        spacing = 6;
+        modules-left = [ "mpris" ];
+        modules-right = [
+          "custom/sys-alerts"
+          "custom/updates"
+        ];
         mpris = {
           format = "{player_icon}  {dynamic}";
           format-paused = "{status_icon}  {dynamic}";
@@ -203,6 +185,23 @@
           title-len = 30;
           artist-len = 20;
           tooltip-format = "{player}: {title} — {artist} ({album})";
+        };
+        "custom/sys-alerts" = {
+          exec = "waybar-sys-alerts";
+          format = "{}";
+          return-type = "json";
+          # 5 min: signals here change slowly (daily upgrade, weekly GC).
+          # Failed units / DnD pile-up worth catching sooner — but not every second.
+          interval = 300;
+          tooltip = true;
+        };
+        "custom/updates" = {
+          exec = "waybar-updates";
+          format = "{}";
+          return-type = "json";
+          interval = 3600;
+          on-click = "xdg-open https://nixos.org/manual/nixos/stable/release-notes";
+          tooltip = true;
         };
       };
     };

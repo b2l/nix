@@ -1,0 +1,98 @@
+#!/usr/bin/env bash
+# waybar-sys-alerts — surface action-needed signals on the bar.
+#
+# Silent (empty text → hidden) when everything is fine. Emits a single icon
+# with a count when one or more issues are detected; tooltip lists them.
+#
+# Checks (all local, no network):
+#   1. nixos-upgrade.service last result = failed
+#   2. nixos-upgrade.service last ran >48h ago (stalled / suspended past window)
+#   3. Booted kernel ≠ current-system kernel (reboot pending)
+#   4. Root filesystem usage >85%
+#   5. Failed systemd units (system + user)
+#   6. Dunst paused with N notifications waiting
+
+set -u
+
+STALE_AGE_SECONDS=$((48 * 3600))
+DISK_THRESHOLD=85
+
+issues=()
+sev=0   # 0=ok, 1=warn (orange), 2=crit (red)
+
+bump_sev() { [ "$1" -gt "$sev" ] && sev=$1; }
+
+# 1 + 2: nixos-upgrade service health
+result=$(systemctl show -p Result --value nixos-upgrade.service 2>/dev/null)
+if [ "${result:-}" = "failed" ]; then
+  issues+=("auto-upgrade failed (systemctl status nixos-upgrade)")
+  bump_sev 2
+fi
+last_enter=$(systemctl show -p ActiveEnterTimestamp --value nixos-upgrade.service 2>/dev/null)
+if [ -n "$last_enter" ]; then
+  last_epoch=$(date -d "$last_enter" +%s 2>/dev/null || echo 0)
+  now_epoch=$(date +%s)
+  age=$(( now_epoch - last_epoch ))
+  if [ "$last_epoch" -gt 0 ] && [ "$age" -gt "$STALE_AGE_SECONDS" ]; then
+    days=$(( age / 86400 ))
+    issues+=("auto-upgrade stalled (${days}d since last run)")
+    bump_sev 1
+  fi
+fi
+
+# 3: reboot needed for kernel
+booted_kernel=$(readlink -f /run/booted-system/kernel 2>/dev/null || true)
+current_kernel=$(readlink -f /run/current-system/kernel 2>/dev/null || true)
+if [ -n "$booted_kernel" ] && [ -n "$current_kernel" ] \
+   && [ "$booted_kernel" != "$current_kernel" ]; then
+  issues+=("reboot pending for new kernel")
+  bump_sev 1
+fi
+
+# 4: disk usage
+disk_pct=$(df --output=pcent / 2>/dev/null | tail -1 | tr -dc '0-9')
+if [ -n "${disk_pct:-}" ] && [ "$disk_pct" -gt "$DISK_THRESHOLD" ]; then
+  issues+=("disk / at ${disk_pct}%")
+  [ "$disk_pct" -gt 95 ] && bump_sev 2 || bump_sev 1
+fi
+
+# 5: failed systemd units (system + user)
+failed_sys=$(systemctl --failed --no-legend 2>/dev/null | wc -l)
+failed_user=$(systemctl --user --failed --no-legend 2>/dev/null | wc -l)
+total_failed=$(( failed_sys + failed_user ))
+if [ "$total_failed" -gt 0 ]; then
+  names=$(systemctl --failed --no-legend 2>/dev/null | awk '{print $2}' | paste -sd, -)
+  names_user=$(systemctl --user --failed --no-legend 2>/dev/null | awk '{print $2}' | paste -sd, -)
+  combined=$(printf '%s,%s' "$names" "$names_user" | sed 's/^,//;s/,$//')
+  issues+=("${total_failed} failed unit(s): ${combined}")
+  bump_sev 2
+fi
+
+# 6: dunst paused with waiting notifications
+if command -v dunstctl >/dev/null 2>&1; then
+  if [ "$(dunstctl is-paused 2>/dev/null)" = "true" ]; then
+    waiting=$(dunstctl count waiting 2>/dev/null || echo 0)
+    if [ "${waiting:-0}" -gt 0 ]; then
+      issues+=("DnD on, ${waiting} notification(s) waiting")
+      bump_sev 1
+    fi
+  fi
+fi
+
+if [ "${#issues[@]}" -eq 0 ]; then
+  printf '{"text":"","tooltip":"","class":"ok"}\n'
+  exit 0
+fi
+
+count=${#issues[@]}
+case "$sev" in
+  2) icon=""; class="crit" ;;
+  1) icon=""; class="warn" ;;
+  *) icon=""; class="info" ;;
+esac
+
+text=$(printf '%s %d' "$icon" "$count")
+tooltip=$(printf '%s\n' "${issues[@]}")
+
+jq -cn --arg text "$text" --arg tooltip "$tooltip" --arg class "$class" \
+  '{text: $text, tooltip: $tooltip, class: $class}'

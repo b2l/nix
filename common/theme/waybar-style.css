@@ -59,9 +59,11 @@ window#waybar.mainbar .modules-right {
     margin: 2px 0;
 }
 
-/* ── Bottom bar: hide empty left/right containers ── */
+/* ── Bottom bar: containers stay transparent; each module styles its own pill ── */
+/* This lets silent modules truly disappear (no ghost pills). */
 window#waybar.nowplaying .modules-left,
-window#waybar.nowplaying .modules-right {
+window#waybar.nowplaying .modules-right,
+window#waybar.nowplaying .modules-center {
     background: transparent;
     border: none;
     padding: 0;
@@ -125,8 +127,6 @@ window#waybar.mainbar .modules-center {
 #network,
 #pulseaudio,
 #power-profiles-daemon,
-#custom-cpu-spark,
-#custom-mem-spark,
 #custom-dictate,
 #custom-donotdisturb,
 #custom-power,
@@ -136,19 +136,6 @@ window#waybar.mainbar .modules-center {
     color: @text;
     margin: 3px 0;
     font-size: 13px;
-}
-
-/* ── Sparklines ── */
-#custom-cpu-spark {
-    color: @peach;
-    font-size: 12px;
-    letter-spacing: -1px;
-}
-
-#custom-mem-spark {
-    color: @lavender;
-    font-size: 12px;
-    letter-spacing: -1px;
 }
 
 /* ── Audio ── */
@@ -273,45 +260,52 @@ window#waybar.mainbar .modules-center {
 }
 
 /* ═══════════════════════════════════
-   NOW PLAYING — bottom floating pill
+   NOW PLAYING — bottom bar
+   bar is empty by default; each module is its own pill,
+   collapsed to zero size when silent.
    ═══════════════════════════════════ */
 window#waybar.nowplaying {
     background-color: transparent;
 }
 
-window#waybar.nowplaying .modules-center {
+/* Shared pill look for any active bottom-bar widget. */
+#mpris,
+#custom-sys-alerts,
+#custom-updates {
     background-color: alpha(@mantle, 0.8);
     border: 1px solid alpha(@surface1, 0.5);
     border-radius: 6px;
-    padding: 0 16px;
-    margin: 0;
-}
-
-#mpris {
-    padding: 0 8px;
-    color: @mauve;
+    padding: 2px 12px;
+    margin: 2px 4px;
     font-size: 13px;
+    color: @text;
 }
 
-#mpris.paused {
-    color: @overlay1;
-    font-style: italic;
-}
-
-#mpris.stopped {
-    margin: 0;
+/* Silent / inactive states — fully collapsed, no ghost pill. */
+#mpris.stopped,
+#custom-sys-alerts.ok,
+#custom-updates.uptodate,
+#custom-updates.unknown {
+    background: transparent;
+    border: none;
     padding: 0;
+    margin: 0;
     min-width: 0;
 }
 
-#mpris.spotify {
-    color: @green;
-}
+/* mpris colors */
+#mpris               { color: @mauve; }
+#mpris.paused        { color: @overlay1; font-style: italic; }
+#mpris.spotify       { color: @green; }
+#mpris.firefox       { color: @peach; }
+#mpris.chromium      { color: @sapphire; }
 
-#mpris.firefox {
-    color: @peach;
-}
+/* System alerts severity */
+#custom-sys-alerts.info { color: @sapphire; }
+#custom-sys-alerts.warn { color: @peach; }
+#custom-sys-alerts.crit { color: @red; }
 
-#mpris.chromium {
-    color: @sapphire;
-}
+/* Updates widget — drift only (uptodate hidden above) */
+#custom-updates.channel,
+#custom-updates.both    { color: @red; }
+#custom-updates.pkg     { color: @peach; }

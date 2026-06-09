@@ -39,7 +39,8 @@ sfw_drift=""
   && sfw_drift=1
 
 if [ -z "$channel_drift" ] && [ -z "$sfw_drift" ]; then
-  printf '{"text":"󰄬","tooltip":"Everything up to date","class":"uptodate"}\n'
+  # Silent when up-to-date — bar should only speak when action is needed.
+  printf '{"text":"","tooltip":"","class":"uptodate"}\n'
   exit 0
 fi
 

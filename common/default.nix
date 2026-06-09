@@ -2,6 +2,7 @@
 
 let
   sfw = pkgs.callPackage ./pkgs/sfw.nix {};
+  mindwtr = pkgs.callPackage ./pkgs/mindwtr.nix {};
 in
 {
   imports = [ ./bash.nix ./tmux.nix ./foot.nix ./hyprland.nix ./secrets.nix ./neovim.nix ./scripts.nix ./pomodoro.nix ./nvchecker.nix ./mail.nix ];
@@ -60,6 +61,7 @@ in
     pnpm
     bun
     sfw
+    mindwtr
     btop
     mpv
     lazygit

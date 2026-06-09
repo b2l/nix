@@ -6,6 +6,13 @@
     experimental-features = [ "nix-command" "flakes" ];
     auto-optimise-store = true;
     trusted-users = [ "root" "nicolas" ];
+    # Keep devshell build inputs alive across GC so nix-direnv stays warm.
+    # Trade-off: /nix/store grows noticeably.
+    keep-outputs = true;
+    keep-derivations = true;
+    # Skip implicit upstream checks for a week — relevant on flaky networks.
+    # Explicit `nix flake update` still refetches.
+    tarball-ttl = 604800;
   };
 
   nixpkgs.config.allowUnfree = true;
@@ -171,14 +178,32 @@
 
   # The upgrade service runs as root but the flake lives in ~nicolas.
   # 1) git safe.directory so root can read the repo
-  # 2) Pre-start: update flake inputs before building (replaces deprecated --update-input)
+  # 2) Wait for real internet reachability before flake update — `persistent=true`
+  #    fires the missed slot on wake-from-suspend, before NetworkManager has DNS
+  #    ready. Without this, the resolver errors out and the whole upgrade fails.
+  # 3) Pre-start: update flake inputs before building (replaces deprecated --update-input)
   systemd.services.nixos-upgrade = {
     environment.GIT_DISCOVERY_ACROSS_FILESYSTEM = "1";
     serviceConfig.ExecStartPre = let
       nix = config.nix.package;
       flakePath = "/home/nicolas/Perso/nix";
       inputs = [ "nixpkgs" "home-manager" "catppuccin" "sops-nix" "nixgl" "nixpkgs-unstable" "nixos-hardware" ];
-    in "+${nix}/bin/nix flake update ${builtins.concatStringsSep " " inputs} --flake ${flakePath}";
+      waitForNet = pkgs.writeShellScript "nixos-upgrade-wait-net" ''
+        # Up to 5 min for DNS + HTTPS to api.github.com to come up.
+        for _ in $(seq 1 60); do
+          if ${pkgs.curl}/bin/curl -fsS --max-time 5 -o /dev/null \
+               https://api.github.com/; then
+            exit 0
+          fi
+          sleep 5
+        done
+        echo "nixos-upgrade: network not reachable after 5 min, giving up" >&2
+        exit 1
+      '';
+    in [
+      "+${waitForNet}"
+      "+${nix}/bin/nix flake update ${builtins.concatStringsSep " " inputs} --flake ${flakePath}"
+    ];
   };
   environment.etc."gitconfig".text = ''
     [safe]
