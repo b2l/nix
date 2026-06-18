@@ -77,6 +77,10 @@
 
   # Docker
   virtualisation.docker.enable = true;
+  # Pin docker_29 — nixpkgs 25.11 marks the default docker_28 as insecure
+  # (unmaintained since November 2025). Remove on 26.05+ once the default
+  # tracks docker_29 or newer.
+  virtualisation.docker.package = pkgs.docker_29;
 
   # Libvirt / QEMU (virt-manager)
   virtualisation.libvirtd.enable = true;

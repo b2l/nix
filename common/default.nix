@@ -73,7 +73,6 @@ in
     fd
     rbw
     go-passbolt-cli
-    claude-code
     jetbrains.datagrip
     vial
     # (pkgs.papirus-icon-theme.overrideAttrs { meta.priority = 10; })
@@ -90,6 +89,11 @@ in
     naps2
     pavucontrol
     virt-manager
+
+    # Bottles — testing the Spark mail .exe (no native Linux/web build).
+    # Manages its own patched Wine runners (Soda/wine-ge) + DXVK and a
+    # webview2 dependency installer; better NixOS behavior than raw Wine.
+    bottles
 
     # Wayland / Hyprland utilities
     wl-clipboard

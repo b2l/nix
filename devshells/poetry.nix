@@ -22,7 +22,9 @@ pkgs.mkShell {
 
   packages = with pkgs; [
     python312
-    poetry
+    # Build poetry against 3.12 so the venvs it creates use 3.12, not the
+    # 3.13 that pkgs.poetry is built against by default.
+    (poetry.override { python3 = python312; })
   ];
 
   shellHook = ''
