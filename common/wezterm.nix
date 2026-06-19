@@ -30,7 +30,20 @@
       config.enable_tab_bar = true
       config.tab_bar_at_bottom = false
       config.use_fancy_tab_bar = true
-      config.hide_tab_bar_if_only_one_tab = true
+      -- Keep the bar visible even with one tab, so the status is always shown.
+      config.hide_tab_bar_if_only_one_tab = false
+
+      -- Status: active workspace ("session") + leader indicator.
+      wezterm.on('update-status', function(window, _)
+        local ws = window:active_workspace()
+        local leader = window:leader_is_active() and ' ⌨ LEADER ' or ''
+        window:set_left_status(wezterm.format {
+          { Foreground = { Color = '#cba6f7' } },  -- catppuccin mauve
+          { Text = '  ' .. ws },
+          { Foreground = { Color = '#f9e2af' } },  -- catppuccin yellow
+          { Text = leader },
+        })
+      end)
 
       -- tmux-style leader: Ctrl+b (same prefix as your tmux).
       config.leader = { key = 'b', mods = 'CTRL', timeout_milliseconds = 1000 }
