@@ -5,7 +5,7 @@ let
   mindwtr = pkgs.callPackage ./pkgs/mindwtr.nix {};
 in
 {
-  imports = [ ./bash.nix ./tmux.nix ./foot.nix ./hyprland.nix ./secrets.nix ./neovim.nix ./scripts.nix ./pomodoro.nix ./nvchecker.nix ./mail.nix ];
+  imports = [ ./bash.nix ./tmux.nix ./foot.nix ./kitty.nix ./hyprland.nix ./secrets.nix ./neovim.nix ./scripts.nix ./pomodoro.nix ./nvchecker.nix ./mail.nix ];
 
   # Shared aliases — applied to every shell home-manager manages.
   home.shellAliases = {
