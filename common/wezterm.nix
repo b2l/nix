@@ -63,6 +63,14 @@
               end
             end),
         } },
+        { key = 'R', mods = 'LEADER|SHIFT', action = act.PromptInputLine {
+            description = 'Rename current workspace',
+            action = wezterm.action_callback(function(_, _, line)
+              if line and line ~= "" then
+                wezterm.mux.rename_workspace(wezterm.mux.get_active_workspace(), line)
+              end
+            end),
+        } },
 
         -- Directional pane focus — Alt+h/t/n/l (matches your tmux M-h/t/n/l).
         { key = 'h', mods = 'ALT', action = act.ActivatePaneDirection 'Left' },
