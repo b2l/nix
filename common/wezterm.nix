@@ -19,6 +19,11 @@
       -- Shell — match foot/tmux.
       config.default_prog = { '${pkgs.bashInteractive}/bin/bash' }
 
+      -- Don't run wezterm's own mux ssh-agent: it overrides SSH_AUTH_SOCK with
+      -- an empty agent and shadows the gcr-ssh-agent socket that environment.d
+      -- exports (see common/default.nix). Leave SSH_AUTH_SOCK inherited.
+      config.mux_enable_ssh_agent = false
+
       -- Appearance (mirrors foot.nix).
       config.font = wezterm.font('FiraCode Nerd Font')
       config.font_size = 12.0
