@@ -36,7 +36,7 @@
       -- Status: active workspace ("session") + leader indicator.
       wezterm.on('update-status', function(window, _)
         local ws = window:active_workspace()
-        local leader = window:leader_is_active() and ' ⌨ LEADER ' or ''
+        local leader = window:leader_is_active() and " ⌨ LEADER " or ""
         window:set_left_status(wezterm.format {
           { Foreground = { Color = '#cba6f7' } },  -- catppuccin mauve
           { Text = '  ' .. ws },
