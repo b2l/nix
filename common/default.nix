@@ -82,7 +82,7 @@ in
     slack
     vscodium
     firefox
-    signal-desktop
+    signal-desktop-bin
     spotify
     gimp
     libreoffice

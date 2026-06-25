@@ -131,6 +131,30 @@
       msmtp.enable = true;
       notmuch.enable = true;
     };
+    webmaster = {
+      flavor = "gmail.com";
+      realName = "Nicolas Medda";
+      address = "webmaster@lecomptoirdespharmacies.fr";
+      userName = "webmaster@lecomptoirdespharmacies.fr";
+      passwordCommand = "secret-tool lookup all webmaster";
+      smtp.tls.useStartTls = true;
+      folders.inbox = "INBOX";
+      mbsync = {
+        enable = true;
+        create = "both";
+        expunge = "both";
+        patterns = [
+          "*"
+          "![Gmail]*"
+          "[Gmail]/Sent Mail"
+          "[Gmail]/Drafts"
+          "[Gmail]/Trash"
+          "[Gmail]/Spam"
+        ];
+      };
+      msmtp.enable = true;
+      notmuch.enable = true;
+    };
   };
 
   # libsecret provides `secret-tool`, used by all PassCmd/passwordeval entries above.
