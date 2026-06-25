@@ -212,7 +212,7 @@
   programs.rofi = {
     enable = true;
     font = "JetBrains Mono 14";
-    terminal = "foot";
+    terminal = "wezterm";
     theme = ./theme/rofi-theme.rasi;
     extraConfig = {
       show-icons = true;

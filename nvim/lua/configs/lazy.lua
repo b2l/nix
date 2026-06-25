@@ -2,6 +2,12 @@ return {
   defaults = { lazy = true },
   install = { colorscheme = { "nvchad" } },
 
+  -- No luarocks/hererocks (needs python + lua 5.1 we don't have). image.nvim
+  -- is the only plugin that pulls a rock (`magick`), and we use its
+  -- `processor = "magick_cli"` which shells out to the imagemagick binary
+  -- instead — so the rock is unnecessary.
+  rocks = { enabled = false },
+
   ui = {
     icons = {
       ft = "",

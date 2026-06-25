@@ -5,7 +5,7 @@ let
   mindwtr = pkgs.callPackage ./pkgs/mindwtr.nix {};
 in
 {
-  imports = [ ./bash.nix ./tmux.nix ./foot.nix ./wezterm.nix ./hyprland.nix ./secrets.nix ./neovim.nix ./scripts.nix ./pomodoro.nix ./nvchecker.nix ./mail.nix ];
+  imports = [ ./bash.nix ./tmux.nix ./foot.nix ./wezterm.nix ./hyprland.nix ./secrets.nix ./neovim.nix ./scripts.nix ./pomodoro.nix ./nvchecker.nix ./mail.nix ./lcdp.nix ];
 
   # Shared aliases — applied to every shell home-manager manages.
   home.shellAliases = {
@@ -123,7 +123,7 @@ in
     awscli2
   ];
 
-  home.sessionVariables.TERMINAL = "foot";
+  home.sessionVariables.TERMINAL = "wezterm";
 
   # PATH for GUI sessions started by systemd (e.g. via SDDM). Bash rcs are not
   # sourced by systemd user services, so Hyprland/Waybar/dunst would otherwise

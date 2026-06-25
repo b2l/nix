@@ -5,7 +5,7 @@
   programs.msmtp.enable = true;
   programs.notmuch = {
     enable = true;
-    new.tags = [ "unread" "inbox" ];
+    new.tags = [ "unread" "inbox" "new" ];
     # `.mbsyncstate` and `.uidvalidity` are added automatically by programs.mbsync.
     search.excludeTags = [ "deleted" "spam" ];
     maildir.synchronizeFlags = true;

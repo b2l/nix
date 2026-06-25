@@ -6,7 +6,7 @@ export PATH="$HOME/.nix-profile/bin:$PATH"
 # spotify -> 8, signal -> 9, chrome -> 10
 
 hyprctl dispatch exec "[workspace 1 silent]" flatpak run org.mozilla.firefox
-hyprctl dispatch exec "[workspace 2 silent]" foot
+hyprctl dispatch exec "[workspace 2 silent]" wezterm start
 hyprctl dispatch exec "[workspace 3 silent]" slack
 hyprctl dispatch exec "[workspace 4 silent]" flatpak run org.mozilla.Thunderbird
 hyprctl dispatch exec "[workspace 8 silent]" flatpak run com.spotify.Client
