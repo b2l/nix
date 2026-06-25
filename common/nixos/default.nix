@@ -169,8 +169,11 @@
   # Automatic system upgrade — tracks the pinned nixos-25.11 branch in flake.nix.
   # Picks up point-release fixes without manual intervention. Does NOT cross
   # major versions (25.11 → 26.05) — that bump is manual in flake.nix.
+  # Disabled: each run did `nix flake update` + `switch` unattended, which could
+  # pull uncached source builds (e.g. signal-desktop → electron) at random times.
+  # Update deliberately instead: `nix flake update` then `nhs`, when the cache is warm.
   system.autoUpgrade = {
-    enable = true;
+    enable = false;
     flake = "/home/nicolas/Perso/nix";
     flags = [ "-L" ];
     dates = "04:00";
