@@ -8,6 +8,9 @@
     #   - mermaid-cli: `mmdc`, renders mermaid code blocks to PNG
     pkgs.imagemagick
     pkgs.mermaid-cli
+    # External viewer for "zoom" on a diagram (real pan/zoom; inline image.nvim
+    # is a static raster). Bound to <leader>dz in nvim/lua/plugins/image.lua.
+    pkgs.imv
   ];
 
   home.sessionVariables.EDITOR = "nvim";
