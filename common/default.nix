@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, pkgs-unstable, ... }:
 
 let
   sfw = pkgs.callPackage ./pkgs/sfw.nix {};
@@ -82,18 +82,13 @@ in
     slack
     vscodium
     firefox
-    signal-desktop-bin
+    pkgs-unstable.signal-desktop
     spotify
     gimp
     libreoffice
     naps2
     pavucontrol
     virt-manager
-
-    # Bottles — testing the Spark mail .exe (no native Linux/web build).
-    # Manages its own patched Wine runners (Soda/wine-ge) + DXVK and a
-    # webview2 dependency installer; better NixOS behavior than raw Wine.
-    bottles
 
     # Wayland / Hyprland utilities
     wl-clipboard
