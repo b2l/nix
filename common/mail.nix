@@ -54,7 +54,7 @@
     };
 
     cheneetcie = {
-      realName = "Nicolas Medda";
+      realName = "Nicolas Medda (OVH)";
       address = "nicolas@cheneetcompagnie.fr";
       userName = "nicolas@cheneetcompagnie.fr";
       passwordCommand = "secret-tool lookup all cheneetcie";
@@ -67,6 +67,35 @@
         host = "pro3.mail.ovh.net";
         port = 587;
         tls.useStartTls = true;
+      };
+      folders.inbox = "INBOX";
+      mbsync = {
+        enable = true;
+        create = "both";
+        expunge = "both";
+        extraConfig.account.AuthMechs = "PLAIN";
+      };
+      msmtp = {
+        enable = true;
+        extraConfig.auth = "login";
+      };
+      notmuch.enable = true;
+    };
+
+    chene = {
+      realName = "Nicolas Medda";
+      address = "nicolas@cheneetcompagnie.fr";
+      userName = "nicolas@cheneetcompagnie.fr";
+      passwordCommand = "secret-tool lookup all cheneetcie";
+      imap = {
+        host = "imap.migadu.com";
+        port = 993;
+        tls.enable = true;
+      };
+      smtp = {
+        host = "smtp.migadu.com";
+        port = 465;
+        tls.enable = true;
       };
       folders.inbox = "INBOX";
       mbsync = {
