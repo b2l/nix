@@ -14,6 +14,7 @@
   accounts.email.maildirBasePath = "mail";
 
   accounts.email.accounts = {
+    # ling on Migadu (re-seeded after the OVH->Migadu server move).
     ling = {
       primary = true;
       realName = "Nicolas Medda";
@@ -51,6 +52,7 @@
       notmuch.enable = true;
     };
 
+    # cheneetcompagnie on Migadu (re-seeded after the OVH->Migadu server move).
     chene = {
       realName = "Nicolas Medda";
       address = "nicolas@cheneetcompagnie.fr";

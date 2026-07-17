@@ -24,6 +24,13 @@
       -- exports (see common/default.nix). Leave SSH_AUTH_SOCK inherited.
       config.mux_enable_ssh_agent = false
 
+      -- Native Wayland (no XWayland) but on the OpenGL front end instead of the
+      -- default WebGpu: under Hyprland the WebGpu path sometimes stops
+      -- scheduling repaints when the compositor withholds frame callbacks, so
+      -- new PTY output only appears on the next input event (keypress/mouse).
+      -- OpenGL schedules frames differently and doesn't exhibit the stall.
+      config.front_end = 'OpenGL'
+
       -- Appearance (mirrors foot.nix).
       config.font = wezterm.font('FiraCode Nerd Font')
       config.font_size = 12.0

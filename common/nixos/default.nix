@@ -86,6 +86,46 @@
   virtualisation.libvirtd.enable = true;
   programs.virt-manager.enable = true;
 
+  # Ensure the libvirt "default" NAT network exists and autostarts.
+  # Stock nixpkgs has no option for this: the network definition and its
+  # autostart flag are imperative state in /var/lib/libvirt that a clean
+  # reinstall would lose. Without autostart, virt-manager fails at VM start
+  # with: network 'default' is not active.
+  systemd.services.libvirt-default-network = {
+    description = "Ensure libvirt default network is defined and autostarted";
+    after = [ "libvirtd.service" ];
+    requires = [ "libvirtd.service" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+    script =
+      let
+        virsh = "${config.virtualisation.libvirtd.package}/bin/virsh -c qemu:///system";
+        defaultNet = pkgs.writeText "libvirt-default-net.xml" ''
+          <network>
+            <name>default</name>
+            <forward mode='nat'/>
+            <bridge name='virbr0' stp='on' delay='0'/>
+            <ip address='192.168.122.1' netmask='255.255.255.0'>
+              <dhcp>
+                <range start='192.168.122.2' end='192.168.122.254'/>
+              </dhcp>
+            </ip>
+          </network>
+        '';
+      in ''
+        # Define only if missing, so an existing (customised) definition stays.
+        if ! ${virsh} net-info default >/dev/null 2>&1; then
+          ${virsh} net-define ${defaultNet}
+        fi
+        ${virsh} net-autostart default
+        # Start now if inactive, so no reboot is needed on first activation.
+        ${virsh} net-start default 2>/dev/null || true
+      '';
+  };
+
   # Printing
   services.printing.enable = true;
   services.printing.drivers = [ pkgs.gutenprint ];

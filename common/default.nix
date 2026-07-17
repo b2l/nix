@@ -73,11 +73,13 @@ in
     fd
     rbw
     go-passbolt-cli
-    jetbrains.datagrip
-    vial
+    brightnessctl
     # (pkgs.papirus-icon-theme.overrideAttrs { meta.priority = 10; })
 
     # GUI apps
+    easyeffects
+    jetbrains.datagrip
+    vial
     google-chrome
     slack
     vscodium
