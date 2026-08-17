@@ -20,10 +20,6 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixgl = {
-      url = "github:nix-community/nixGL";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-terraform129.url = "github:nixos/nixpkgs/17f716dbf88d1c224e3a62d762de4aaea375218e";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
@@ -33,13 +29,9 @@
     };
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, catppuccin, nixgl, sops-nix, ... }:
+  outputs = inputs@{ nixpkgs, home-manager, catppuccin, sops-nix, ... }:
     let
       system = "x86_64-linux";
-      pkgs = import nixpkgs {
-        inherit system;
-        overlays = [ nixgl.overlay ];
-      };
       pkgs-unstable = import inputs.nixpkgs-unstable {
         inherit system;
         config.allowUnfree = true;
@@ -56,7 +48,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "hm-backup";
-            home-manager.extraSpecialArgs = { inherit inputs pkgs-unstable; };
+            home-manager.extraSpecialArgs = { inherit inputs pkgs-unstable pkgs-tf129; };
             home-manager.sharedModules = [
               catppuccin.homeModules.catppuccin
               sops-nix.homeManagerModules.sops
@@ -68,24 +60,6 @@
     in {
       nixosConfigurations = {
         nixos-laptop = mkNixos ./hosts/nixos-laptop/configuration.nix;
-      };
-
-      devShells.x86_64-linux = {
-        tauri = import ./devshells/tauri.nix { inherit pkgs; };
-        java21 = import ./devshells/java21.nix { inherit pkgs; };
-        java-legacy = import ./devshells/java-legacy.nix { inherit pkgs; };
-        node20 = import ./devshells/node20.nix { inherit pkgs; };
-        node22 = import ./devshells/node22.nix { inherit pkgs; };
-        node24 = import ./devshells/node24.nix { inherit pkgs; };
-        pnpm10 = import ./devshells/pnpm10.nix { inherit pkgs; };
-        pnpm11 = import ./devshells/pnpm11.nix { inherit pkgs pkgs-unstable; };
-        python = import ./devshells/python.nix { inherit pkgs; };
-        poetry = import ./devshells/poetry.nix { inherit pkgs; };
-        uv = import ./devshells/uv.nix { inherit pkgs; };
-        terraform = import ./devshells/terraform.nix { inherit pkgs; };
-        terraform129 = import ./devshells/terraform129.nix { inherit pkgs pkgs-tf129; };
-        electron = import ./devshells/electron.nix { inherit pkgs; };
-        playframework = import ./devshells/playframework.nix { inherit pkgs; };
       };
     };
 }

@@ -39,8 +39,6 @@ This repository manages a declarative, high-performance development environment 
 │   ├── secrets.nix      # sops-nix secret declarations
 │   └── theme/           # Extracted theme files (CSS, conf)
 ├── nvim/                # Neovim config (NvChad + lazy.nvim, mutable via mkOutOfStoreSymlink)
-├── devshells/           # Per-project development environments
-│   └── tauri.nix        # Tauri app dependencies
 ├── hosts/               # Machine-specific overrides
 │   └── fedora/
 │       └── home.nix     # Fedora 42 specifics
@@ -107,17 +105,19 @@ nix-collect-garbage
 
 ---
 
-## Per-Project Dev Environments
+## Dev Toolchains
 
-Projects use `devShells` defined in this repo + `direnv` for automatic activation:
+All dev toolchains are installed globally via home-manager (`common/dev.nix`):
+pinned pnpm, node, python/uv/poetry, jdk21/maven/sbt, terraform/opentofu,
+rust, etc. No flake devShells — entering a repo costs nothing.
 
-```bash
-# In project directory
-echo "use flake ~/Perso/nix#tauri" > .envrc
-direnv allow
-```
+Where a repo still needs project-specific environment, a minimal `.envrc`
+(no nix eval) does it:
 
-Available devShells: `tauri`
+* venv activation (uv/poetry repos): `export VIRTUAL_ENV` + `PATH_add`
+* Electron repos: `. ~/.config/dev-env/electron.sh` (NIX_LD_LIBRARY_PATH)
+* Tauri repos: `. ~/.config/dev-env/tauri.sh` (PKG_CONFIG_PATH & co)
+* pnpm 10 repos: `PATH_add ~/.local/share/pnpm10/bin`
 
 ---
 

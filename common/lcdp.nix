@@ -146,6 +146,12 @@
       # source lcdp env (decrypted by sops-nix at activation)
       [ -f "${config.sops.secrets."lcdp_env".path}" ] && . "${config.sops.secrets."lcdp_env".path}"
 
+      # source extra lcdp env files managed outside nix (e.g. MCP tokens)
+      for _lcdp_env_file in "$HOME/.config/lcdp/"*; do
+        [ -f "$_lcdp_env_file" ] && . "$_lcdp_env_file"
+      done
+      unset _lcdp_env_file
+
       # map the Gemfury deploy token to poetry/uv auth (token = username, blank password)
       if [ -n "$GEMFURY_DEPLOY_TOKEN" ]; then
         export POETRY_HTTP_BASIC_FURY_USERNAME="$GEMFURY_DEPLOY_TOKEN"

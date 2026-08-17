@@ -5,7 +5,7 @@ let
   mindwtr = pkgs.callPackage ./pkgs/mindwtr.nix {};
 in
 {
-  imports = [ ./bash.nix ./tmux.nix ./foot.nix ./wezterm.nix ./hyprland.nix ./secrets.nix ./neovim.nix ./scripts.nix ./pomodoro.nix ./nvchecker.nix ./mail.nix ./lcdp.nix ];
+  imports = [ ./bash.nix ./tmux.nix ./foot.nix ./wezterm.nix ./hyprland.nix ./secrets.nix ./neovim.nix ./scripts.nix ./pomodoro.nix ./nvchecker.nix ./mail.nix ./lcdp.nix ./dev.nix ];
 
   # Shared aliases — applied to every shell home-manager manages.
   home.shellAliases = {
@@ -118,6 +118,7 @@ in
     warpd
     jira-cli-go
     awscli2
+    python3
   ];
 
   home.sessionVariables.TERMINAL = "wezterm";

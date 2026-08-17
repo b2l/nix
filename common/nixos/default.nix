@@ -6,7 +6,8 @@
     experimental-features = [ "nix-command" "flakes" ];
     auto-optimise-store = true;
     trusted-users = [ "root" "nicolas" ];
-    # Keep devshell build inputs alive across GC so nix-direnv stays warm.
+    # Keep build inputs of project flakes (bbcli, warpd, ansible, lcdp-k8s)
+    # alive across GC so nix-direnv stays warm.
     # Trade-off: /nix/store grows noticeably.
     keep-outputs = true;
     keep-derivations = true;
@@ -234,7 +235,7 @@
     serviceConfig.ExecStartPre = let
       nix = config.nix.package;
       flakePath = "/home/nicolas/Perso/nix";
-      inputs = [ "nixpkgs" "home-manager" "catppuccin" "sops-nix" "nixgl" "nixpkgs-unstable" "nixos-hardware" ];
+      inputs = [ "nixpkgs" "home-manager" "catppuccin" "sops-nix" "nixpkgs-unstable" "nixos-hardware" ];
       waitForNet = pkgs.writeShellScript "nixos-upgrade-wait-net" ''
         # Up to 5 min for DNS + HTTPS to api.github.com to come up.
         for _ in $(seq 1 60); do
