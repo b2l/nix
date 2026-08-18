@@ -92,6 +92,13 @@ let
     (lib.makeSearchPathOutput "dev" "lib/pkgconfig" tauriClosure)
     (lib.makeSearchPathOutput "dev" "share/pkgconfig" tauriClosure)
   ];
+  # Runtime lib dirs for the linker (.pc files reference libs like -lz without
+  # a -L; mkShell's cc-wrapper used to inject these via NIX_LDFLAGS). The
+  # closure items are mostly .dev outputs (propagatedBuildInputs), and
+  # makeLibraryPath keeps an explicitly-specified output as-is, so force the
+  # runtime output by hand: lib if it exists, else out.
+  tauriLibraryPath = lib.makeSearchPath "lib"
+    (map (p: p.lib or p.out or p) tauriClosure);
 in
 {
   home.packages = with pkgs; [
@@ -153,7 +160,7 @@ in
     export WEBKIT_DISABLE_DMABUF_RENDERER=1
     export GIO_EXTRA_MODULES="${pkgs.glib-networking}/lib/gio/modules"
     export XDG_DATA_DIRS="${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/${pkgs.gsettings-desktop-schemas.name}:${pkgs.gtk3}/share/gsettings-schemas/${pkgs.gtk3.name}:$XDG_DATA_DIRS"
-    export LIBRARY_PATH="${pkgs.notmuch}/lib:${lib.makeLibraryPath tauriClosure}''${LIBRARY_PATH:+:$LIBRARY_PATH}"
+    export LIBRARY_PATH="${pkgs.notmuch}/lib:${tauriLibraryPath}''${LIBRARY_PATH:+:$LIBRARY_PATH}"
     export PKG_CONFIG_PATH="${tauriPkgConfigPath}''${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}"
   '';
 }
