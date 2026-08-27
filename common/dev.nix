@@ -113,10 +113,14 @@ in
     jdt-language-server
 
     # Python (python3 is in default.nix)
+    python3Packages.pip
     uv
-    # Build poetry against 3.12 so the venvs it creates use 3.12, not the
-    # 3.13 that pkgs.poetry is built against by default.
-    (poetry.override { python3 = python312; })
+    basedpyright
+    ruff
+    # Poetry from unstable — stable (25.11) is stuck on 2.2.1, we need >= 2.4.
+    # Built against 3.12 so the venvs it creates use 3.12, not the 3.13 that
+    # poetry is built against by default.
+    (pkgs-unstable.poetry.override { python3 = pkgs-unstable.python312; })
 
     # Infra (awscli2 is in default.nix)
     opentofu
@@ -136,6 +140,9 @@ in
     # Scripting / DB (ex lcdp-script shell)
     kotlin
     postgresql_16
+    # pg_config wrapper — headers + libpq for source builds of psycopg & co
+    # (ubuntu equivalent: libpq-dev)
+    postgresql_16.pg_config
   ];
 
   # Installs jdk21 and sets JAVA_HOME.

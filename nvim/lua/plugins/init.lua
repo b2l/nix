@@ -309,5 +309,20 @@ return {
     lazy = false,
     -- Completion for `blink.cmp`
     -- dependencies = { "saghen/blink.cmp" },
+    config = function()
+      require("markview").setup()
+      require("markview.extras.checkboxes").setup {
+        default = "x",
+        states = { { " ", "x" } },
+      }
+      -- Buffer-local: keeps NvChad's <leader>x (close buffer) outside markdown
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "markdown",
+        callback = function(ev)
+          vim.keymap.set("n", "<leader>x", "<CMD>Checkbox toggle<CR>", { buffer = ev.buf, desc = "Toggle checkbox" })
+          vim.keymap.set("x", "<leader>x", ":Checkbox toggle<CR>", { buffer = ev.buf, desc = "Toggle checkbox" })
+        end,
+      })
+    end,
   }
 }

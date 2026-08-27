@@ -3,6 +3,7 @@
 let
   sfw = pkgs.callPackage ./pkgs/sfw.nix {};
   mindwtr = pkgs.callPackage ./pkgs/mindwtr.nix {};
+  claude-desktop = pkgs.callPackage ./pkgs/claude-desktop.nix {};
 in
 {
   imports = [ ./bash.nix ./tmux.nix ./foot.nix ./wezterm.nix ./hyprland.nix ./secrets.nix ./neovim.nix ./scripts.nix ./pomodoro.nix ./nvchecker.nix ./mail.nix ./lcdp.nix ./dev.nix ];
@@ -77,6 +78,7 @@ in
     # (pkgs.papirus-icon-theme.overrideAttrs { meta.priority = 10; })
 
     # GUI apps
+    claude-desktop
     easyeffects
     jetbrains.datagrip
     vial

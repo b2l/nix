@@ -33,7 +33,12 @@ M.ui = {
 					end
 				end
 
-				return "%#St_file# " .. icon .. " " .. name .. " "
+				-- CRLF badge: only shown when the buffer would write dos line
+				-- endings, so a quiet statusline means unix
+				local ff = vim.bo[bufnr].fileformat
+				local ff_badge = ff ~= "unix" and ("%#St_lspWarning#[" .. ff .. "] ") or ""
+
+				return "%#St_file# " .. icon .. " " .. name .. " " .. ff_badge
 			end,
 		},
 	},

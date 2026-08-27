@@ -1,7 +1,18 @@
 require("nvchad.configs.lspconfig").defaults()
 
-local servers = { "html", "cssls", "ts_ls", "yamlls", "jdtls" }
+local servers = { "html", "cssls", "ts_ls", "yamlls", "jdtls", "basedpyright", "ruff" }
 vim.lsp.enable(servers)
+
+-- Python: ruff handles lint/format/imports; basedpyright types/navigation
+vim.lsp.config("basedpyright", {
+  settings = {
+    basedpyright = {
+      disableOrganizeImports = true,
+      -- Default "recommended" mode floods untyped codebases with reportUnknown* warnings
+      analysis = { typeCheckingMode = "standard" },
+    },
+  },
+})
 
 -- YAML Language Server config (OpenAPI support)
 vim.lsp.config("yamlls", {
