@@ -189,6 +189,8 @@
     wget
     pciutils
     usbutils
+    wireguard-tools
+    protonvpn-gui
   ];
 
   # Pinentry over Wayland for rbw/gnupg
