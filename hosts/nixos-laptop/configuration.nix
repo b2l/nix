@@ -16,6 +16,7 @@
   ];
 
   networking.hostName = "nixos-laptop";
+  networking.extraHosts = "127.0.0.1 www.lcdp.localhost admin.lcdp.localhost api.lcdp.localhost metabase.lcdp.localhost";
 
   # UEFI + systemd-boot
   boot.loader.systemd-boot.enable = true;
