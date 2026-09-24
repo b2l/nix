@@ -93,6 +93,7 @@ in
     naps2
     pavucontrol
     virt-manager
+    localsend
 
     # Wayland / Hyprland utilities
     wl-clipboard
