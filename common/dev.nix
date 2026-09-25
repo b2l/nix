@@ -114,7 +114,8 @@ in
 
     # Python (python3 is in default.nix)
     python3Packages.pip
-    uv
+    # uv from unstable — stable (25.11) is stuck on 0.9.30, we need >= 0.11.22.
+    pkgs-unstable.uv
     basedpyright
     ruff
     # Poetry from unstable — stable (25.11) is stuck on 2.2.1, we need >= 2.4.

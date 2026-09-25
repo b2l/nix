@@ -49,6 +49,7 @@
       _prepend_path "$HOME/.nix-profile/bin"
       _prepend_path "$HOME/.cargo/bin"
       _prepend_path "$PNPM_HOME"
+      _prepend_path "$PNPM_HOME/bin"
       _prepend_path "$BUN_INSTALL/bin"
       _prepend_path "$HOME/.local/bin"
       _prepend_path "/run/wrappers/bin"
