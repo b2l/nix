@@ -87,6 +87,7 @@ in
     vscodium
     firefox
     pkgs-unstable.signal-desktop
+    pkgs-unstable.postman
     spotify
     gimp
     libreoffice
