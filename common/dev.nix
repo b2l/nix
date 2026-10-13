@@ -119,9 +119,13 @@ in
     basedpyright
     ruff
     # Poetry from unstable — stable (25.11) is stuck on 2.2.1, we need >= 2.4.
-    # Built against 3.12 so the venvs it creates use 3.12, not the 3.13 that
-    # poetry is built against by default.
-    (pkgs-unstable.poetry.override { python3 = pkgs-unstable.python312; })
+    # Pris tel quel, sans override de l'interpreteur : celui contre lequel
+    # poetry est bati ne determine PAS celui du venv. Poetry 2.x a
+    # virtualenvs.use-poetry-python = false par defaut et choisit un python
+    # compatible avec le requires-python du projet. C'est donc au
+    # pyproject.toml de declarer ">=3.12,<3.13" (ou python = "~3.12") ;
+    # "^3.12" ne suffit pas, il autorise 3.13.
+    pkgs-unstable.poetry
 
     # Infra (awscli2 is in default.nix)
     opentofu

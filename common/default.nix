@@ -1,4 +1,4 @@
-{ pkgs, pkgs-unstable, ... }:
+{ lib, pkgs, pkgs-unstable, ... }:
 
 let
   sfw = pkgs.callPackage ./pkgs/sfw.nix {};
@@ -124,6 +124,10 @@ in
     jira-cli-go
     awscli2
     python3
+    # 3.12 en plus du 3.13 par défaut : collision sur bin/python3, bin/python
+    # et bin/idle, d'où le lowPrio. Expose python3.12 pour les repos qui
+    # déclarent requires-python < 3.13.
+    (lib.lowPrio pkgs.python312)
   ];
 
   home.sessionVariables.TERMINAL = "wezterm";
