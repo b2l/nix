@@ -146,10 +146,10 @@ in
     postgresql_16.pg_config
   ];
 
-  # Installs jdk21 and sets JAVA_HOME.
+  # Installs jdk25 and sets JAVA_HOME.
   programs.java = {
     enable = true;
-    package = pkgs.jdk21;
+    package = pkgs.jdk25;
   };
 
   # Poetry creates .venv/ in the project root instead of

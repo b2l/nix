@@ -75,6 +75,7 @@ in
     rbw
     go-passbolt-cli
     brightnessctl
+    hyprmon
     # (pkgs.papirus-icon-theme.overrideAttrs { meta.priority = 10; })
 
     # GUI apps
